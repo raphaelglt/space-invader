@@ -7,6 +7,11 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!--
+    <audio loop autoplay preload="auto" controls id="music" style="display:none">
+        <source src="ressources/ohio.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>-->
     <div id="page">
         <nav>
             <h3>Score :</h3>
@@ -15,10 +20,10 @@
                 <li>Fin</li>
             </ul>
         </nav>
-        <div id="grille" class="grille"></div>
+        <div class="grille"></div>
     </div>    
 
-    <script src="app.js"></script>
+    <script type="module" src="app.js"></script>
     <script src="test.js"></script>
 </body>
 </html>
