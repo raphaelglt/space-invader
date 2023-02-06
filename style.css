@@ -35,24 +35,10 @@ h3 {
     background-position: center;
     background-size: contain;
 }
-
-#conteneur{
-    position: relative;
-    width: 300px;
-    height: 300px;
-    border: none;
-
-}
 .alien {
     background: url(ressources/ennemies.png);
     background-position: center;
     background-size: contain;
-    position: absolute;
-    width: 150px;
-    height: 150px;
-    top: 0px;
-    left: 0px;
-    border: none;
 }
 .boom {
     background-color: red;

@@ -1,15 +1,12 @@
-function myMove() {
-    var elem =document.getElementById ("alien");
-    var pos = 0;
-    var id = setInterval(frame, 5);
-
-    function frame(){
-        if (pos==285){
-            clearInterval(id);
-        }else{
-            pos++;
-            elem.style;left = pos +"px";
-
-        }
-    }
+const grid = document.getElementsByClassName('grille')[0]
+for (let i = 0; i<12; i++) {
+  const startDiv = document.createElement('div');
+  grid.appendChild(startDiv)
+  for (let j = 0; j<18; j++) {
+    const newDiv = document.createElement('div');
+    grid.appendChild(newDiv)
+  }
+  const endDiv = document.createElement('div');
+  endDiv.setAttribute('end', true);
+  grid.appendChild(endDiv)
 }
