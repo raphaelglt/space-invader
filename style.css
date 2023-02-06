@@ -40,9 +40,24 @@ h3 {
     background-position: center;
     background-size: contain;
 }
+
+#ennemi {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 20px;
+    height: 20px;
+    background-image: url("ressources/ennemies.png");
+    background-size: cover;
+  }
 .boom {
     background-color: red;
 }
 .laser {
     background-color: orange;
 }
+
+
+
+
+
