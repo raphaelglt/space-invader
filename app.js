@@ -25,7 +25,7 @@ player.elt.style.top = player.pos.bottom+"px";
 player.elt.style.left = player.pos.left+"px";
 
 console.log(gridTop, gridBottom, gridLeft, gridRight)
-const speed = 15;
+const speed = 30;
 
 document.addEventListener("keydown", (event) => {
   grid.removeChild(player.elt);
@@ -74,7 +74,7 @@ setInterval(() => {
       ennemy.pos.left += speed;
       ennemy.elt.style.left = ennemy.pos.left+"px"
     } else {
-      ennemy.pos.bottom += speed*2;
+      ennemy.pos.bottom += speed*3;
       ennemy.elt.style.top = ennemy.pos.bottom+"px"
       ennemy.direction = "left"
     }
@@ -84,7 +84,7 @@ setInterval(() => {
       ennemy.pos.left -= speed;
       ennemy.elt.style.left = ennemy.pos.left+"px"
     } else {
-      ennemy.pos.bottom += speed*2;
+      ennemy.pos.bottom += speed*3;
       ennemy.elt.style.top = ennemy.pos.bottom+"px"
       ennemy.direction = "right"
     }
