@@ -7,16 +7,17 @@
     height: 500px;
     margin: 0 auto;
     box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-    background: url(ressources/background-black.png);
-    animation: background-defile 5s linear infinite;
+    background: url(ressources/pexels-adam-krypel-6498994.jpg);
+    background-position: center;
+    animation: background-defile 8s linear infinite;
 }
 
 @keyframes background-defile {
     from {
-        background-position-y: 0px;
+        background-position-y: 500px;
     }
     to {
-        background-position-y: 256px;
+        background-position-y: 4000px;
     }
 }
 
