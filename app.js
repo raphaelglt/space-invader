@@ -1,7 +1,9 @@
-let Player = class Player {
-  constructor(pos, elt) {
-    this.elt = elt
+let Entity = class Entity {
+  constructor(pos, elt, type, direction) {
+    this.elt = elt;
     this.pos = pos;
+    this.type = type;
+    this.direction = direction
   }
 }
 
@@ -16,7 +18,7 @@ function generatePlayer() {
   const playerImg = document.createElement('div')
   grid.appendChild(playerImg)
   playerImg.setAttribute('class', 'tireur')
-  return new Player({bottom: gridBottom-50, left: (gridRight/2)+50}, playerImg)
+  return new Entity({bottom: gridBottom-50, left: (gridRight/2)+50}, playerImg, "player", null)
 }
 const player = generatePlayer()
 player.elt.style.top = player.pos.bottom+"px";
@@ -53,3 +55,40 @@ document.addEventListener("keydown", (event) => {
   }
   grid.appendChild(player.elt)
 });
+
+let ennemyImg = document.createElement('div')
+grid.appendChild(ennemyImg)
+ennemyImg.setAttribute('class', 'alien')
+ennemy = new Entity({bottom: gridTop, left: gridLeft}, ennemyImg, "ennemy", "right")
+
+ennemyImg = document.createElement('div')
+grid.appendChild(ennemyImg)
+ennemyImg.setAttribute('class', 'alien')
+ennemy = new Entity({bottom: gridTop, left: gridLeft}, ennemyImg, "ennemy", "right")
+
+setInterval(() => {
+  grid.removeChild(ennemy.elt)
+  console.log(ennemy.direction)
+  if (ennemy.direction === "right") {
+    if (ennemy.pos.left < gridRight-50) {
+      ennemy.pos.left += speed;
+      ennemy.elt.style.left = ennemy.pos.left+"px"
+    } else {
+      ennemy.pos.bottom += speed*2;
+      ennemy.elt.style.top = ennemy.pos.bottom+"px"
+      ennemy.direction = "left"
+    }
+  }
+  if (ennemy.direction === "left") {
+    if (ennemy.pos.left > gridLeft+5) {
+      ennemy.pos.left -= speed;
+      ennemy.elt.style.left = ennemy.pos.left+"px"
+    } else {
+      ennemy.pos.bottom += speed*2;
+      ennemy.elt.style.top = ennemy.pos.bottom+"px"
+      ennemy.direction = "right"
+    }
+  }
+  grid.appendChild(ennemy.elt)
+  
+}, 100)
