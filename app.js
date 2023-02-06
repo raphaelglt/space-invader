@@ -5,7 +5,8 @@ let Player = class Player {
   }
 }
 
-const squares = grid.children;
+const grid = document.getElementsByClassName('grille')[0]
+
 var gridTop = grid.getBoundingClientRect().top;
 var gridBottom = grid.getBoundingClientRect().bottom;
 var gridLeft = grid.getBoundingClientRect().left;
@@ -25,34 +26,30 @@ console.log(gridTop, gridBottom, gridLeft, gridRight)
 const speed = 15;
 
 document.addEventListener("keydown", (event) => {
+  grid.removeChild(player.elt);
   if (event.isComposing || event.keyCode === 37) {
     if (player.pos.left > gridLeft+5) {
-      grid.removeChild(player.elt);
       player.pos.left -= speed;
       player.elt.style.left = player.pos.left+"px"
-      grid.appendChild(player.elt)
     }  
   }
   if (event.isComposing || event.keyCode === 39) {
     if (player.pos.left < gridRight-50) {
-      grid.removeChild(player.elt);
       player.pos.left += speed;
       player.elt.style.left = player.pos.left+"px"
-      grid.appendChild(player.elt)
     }  
   }
   if (event.isComposing || event.keyCode === 40) {
-    if (player.pos < 220) {
-      squares[player.pos].removeChild(player.elt);
-      squares[player.pos+20].appendChild(player.elt)
-      player.pos += speed
+    if (player.pos.bottom < gridBottom-50) {
+      player.pos.bottom += speed;
+      player.elt.style.top = player.pos.bottom+"px"
     }  
   }
   if (event.isComposing || event.keyCode === 38) {
-    if (player.pos > 1) {
-      squares[player.pos].removeChild(player.elt);
-      squares[player.pos-20].appendChild(player.elt)
-      player.pos -= speed
+    if (player.pos.bottom > 0) {
+      player.pos.bottom -= speed;
+      player.elt.style.top = player.pos.bottom+"px"     
     }  
   }
+  grid.appendChild(player.elt)
 });
