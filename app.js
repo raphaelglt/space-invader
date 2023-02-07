@@ -4,7 +4,7 @@ let Entity = class Entity {
     this.elt = elt;
     this.pos = pos;
     this.type = type;
-    this.direction = direction
+    this.direction = direction;
   }
 
   move(grid) {
