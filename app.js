@@ -1,3 +1,5 @@
+var playing = true;
+
 //import { Entity } from "./entity.js"
 let Entity = class Entity {
   constructor(pos, elt, type, direction) {
@@ -8,47 +10,60 @@ let Entity = class Entity {
   }
 
   move(grid) {
-    grid.removeChild(this.elt)
-    if (this.direction === "right") {
-      if (this.pos.left < gridRight-50) {
-        this.pos.left += ennemySpeed;
-        this.elt.style.left = this.pos.left+"px"
-      } else {
-        this.pos.bottom += 150;
+    if (playing || this.type !== "ennemy") {
+      grid.removeChild(this.elt)
+      if (this.direction === "right") {
+        if (this.pos.left < gridRight-50) {
+          this.pos.left += ennemySpeed;
+          this.elt.style.left = this.pos.left+"px"
+        } else {
+          this.pos.bottom += 150;
+          this.elt.style.top = this.pos.bottom+"px"
+          this.direction = "left"
+        }
+      }
+      if (this.direction === "left") {
+        if (this.pos.left > gridLeft+5) {
+          this.pos.left -= ennemySpeed;
+          this.elt.style.left = this.pos.left+"px"
+        } else {
+          this.pos.bottom += 150;
+          this.elt.style.top = this.pos.bottom+"px"
+          this.direction = "right"
+        }
+      }
+      if (this.direction === "up") {
+        if (this.pos.bottom<-50) {
+          missiles.shift()
+        }
+        this.pos.bottom -= missileSpeed;
         this.elt.style.top = this.pos.bottom+"px"
-        this.direction = "left"
       }
+      grid.appendChild(this.elt)
+    } else {
+      alert('loose')
+      playing = true;
     }
-    if (this.direction === "left") {
-      if (this.pos.left > gridLeft+5) {
-        this.pos.left -= ennemySpeed;
-        this.elt.style.left = this.pos.left+"px"
-      } else {
-        this.pos.bottom += 150;
-        this.elt.style.top = this.pos.bottom+"px"
-        this.direction = "right"
-      }
-    }
-    if (this.direction === "up") {
-      if (this.pos.bottom<-50) {
-        missiles.shift()
-      }
-      this.pos.bottom -= missileSpeed;
-      this.elt.style.top = this.pos.bottom+"px"
-    }
-    grid.appendChild(this.elt)
   }
 
   checkCollision(elm2) {
     var elm1Rect = this.elt.getBoundingClientRect();
     var elm2Rect = elm2.elt.getBoundingClientRect();
   
-    return (elm1Rect.right >= elm2Rect.left &&
+    const collision = (elm1Rect.right >= elm2Rect.left &&
         elm1Rect.left <= elm2Rect.right) &&
       (elm1Rect.bottom >= elm2Rect.top &&
         elm1Rect.top <= elm2Rect.bottom);
+
+    if (this.type === "ennemy" && elm2.type === "player" && collision) {
+      console.log('eog')
+      playing = false
+    }
+    
+    return collision
   }
 }
+console.log(playing)
 
 const grid = document.getElementsByClassName('grille')[0]
 const audio = document.getElementById('music')
@@ -72,8 +87,6 @@ const playerSpeed = 30;
 const ennemySpeed = playerSpeed/10
 const missileSpeed = playerSpeed/3
 const missiles = []
-
-
 
 //handle player input
 document.addEventListener("keydown", (event) => {
@@ -145,23 +158,23 @@ setInterval(() => {
 
 //handle ennemies movement
 setInterval(() => {
-  ennemies.forEach((elt => {
-    elt.move(grid)
-  }))
-  
-  missiles.forEach((missile => {
-    missile.move(grid)
-    ennemies.forEach((ennemy => {
-      if (missile.checkCollision(ennemy)) {
-        let indexMissile = missiles.indexOf(missile)
-        missiles.splice(indexMissile, 1)
-        grid.removeChild(missile.elt)
-
-        let indexEnnemy = ennemies.indexOf(ennemy)
-        ennemies.splice(indexEnnemy, 1)
-        grid.removeChild(ennemy.elt)
-      }
+    ennemies.forEach((elt => {
+      elt.checkCollision(player)
+      elt.move(grid)
     }))
     
-  }))
+    missiles.forEach((missile => {
+      missile.move(grid)
+      ennemies.forEach((ennemy => {
+        if (missile.checkCollision(ennemy)) {
+          let indexMissile = missiles.indexOf(missile)
+          missiles.splice(indexMissile, 1)
+          grid.removeChild(missile.elt)
+
+          let indexEnnemy = ennemies.indexOf(ennemy)
+          ennemies.splice(indexEnnemy, 1)
+          grid.removeChild(ennemy.elt)
+        }
+      }))
+    }))
 }, 8)
