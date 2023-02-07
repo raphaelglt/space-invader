@@ -11,20 +11,20 @@ let Entity = class Entity {
     grid.removeChild(this.elt)
     if (this.direction === "right") {
       if (this.pos.left < gridRight-50) {
-        this.pos.left += speed;
+        this.pos.left += ennemySpeed;
         this.elt.style.left = this.pos.left+"px"
       } else {
-        this.pos.bottom += speed*5;
+        this.pos.bottom += 150;
         this.elt.style.top = this.pos.bottom+"px"
         this.direction = "left"
       }
     }
     if (this.direction === "left") {
       if (this.pos.left > gridLeft+5) {
-        this.pos.left -= speed;
+        this.pos.left -= ennemySpeed;
         this.elt.style.left = this.pos.left+"px"
       } else {
-        this.pos.bottom += speed*5;
+        this.pos.bottom += 150;
         this.elt.style.top = this.pos.bottom+"px"
         this.direction = "right"
       }
@@ -33,7 +33,7 @@ let Entity = class Entity {
       if (this.pos.bottom<-50) {
         missiles.shift()
       }
-      this.pos.bottom -= speed;
+      this.pos.bottom -= missileSpeed;
       this.elt.style.top = this.pos.bottom+"px"
     }
     grid.appendChild(this.elt)
@@ -68,7 +68,9 @@ const player = generatePlayer()
 player.elt.style.top = player.pos.bottom+"px";
 player.elt.style.left = player.pos.left+"px";
 
-const speed = 30;
+const playerSpeed = 30;
+const ennemySpeed = playerSpeed/10
+const missileSpeed = playerSpeed/3
 const missiles = []
 
 
@@ -79,28 +81,28 @@ document.addEventListener("keydown", (event) => {
     if (event.isComposing || event.keyCode === 37) {
       //moving left
       if (player.pos.left > gridLeft+5) {
-        player.pos.left -= speed;
+        player.pos.left -= playerSpeed;
         player.elt.style.left = player.pos.left+"px"
       }  
     }
     if (event.isComposing || event.keyCode === 39) {
       //moving right
       if (player.pos.left < gridRight-50) {
-        player.pos.left += speed;
+        player.pos.left += playerSpeed;
         player.elt.style.left = player.pos.left+"px"
       }  
     }
     if (event.isComposing || event.keyCode === 40) {
       //moving bottom
       if (player.pos.bottom < gridBottom-50) {
-        player.pos.bottom += speed;
+        player.pos.bottom += playerSpeed;
         player.elt.style.top = player.pos.bottom+"px"
       }  
     }
     if (event.isComposing || event.keyCode === 38) {
       //moving top
       if (player.pos.bottom > 0) {
-        player.pos.bottom -= speed;
+        player.pos.bottom -= playerSpeed;
         player.elt.style.top = player.pos.bottom+"px"     
       }  
     }
@@ -162,4 +164,4 @@ setInterval(() => {
     }))
     
   }))
-}, 100)
+}, 8)
