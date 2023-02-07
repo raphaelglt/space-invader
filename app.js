@@ -37,7 +37,10 @@ let Entity = class Entity {
       this.elt.style.top = this.pos.bottom+"px"
     }
     grid.appendChild(this.elt)
+
+    
   }
+
 
   checkCollision(elm2) {
     var elm1Rect = this.elt.getBoundingClientRect();
@@ -47,7 +50,11 @@ let Entity = class Entity {
         elm1Rect.left <= elm2Rect.right) &&
       (elm1Rect.bottom >= elm2Rect.top &&
         elm1Rect.top <= elm2Rect.bottom);
+
+   
   }
+  
+  
 }
 
 const grid = document.getElementsByClassName('grille')[0]
@@ -72,6 +79,7 @@ const playerSpeed = 30;
 const ennemySpeed = playerSpeed/10
 const missileSpeed = playerSpeed/3
 const missiles = []
+
 
 
 
@@ -165,3 +173,16 @@ setInterval(() => {
     
   }))
 }, 8)
+
+
+
+
+setInterval(() => {
+  ennemies.forEach(ennemy => {
+    if (player.checkCollision(ennemy)) {
+      console.log('Player died!');
+      
+    }
+  });
+}, 16);
+
