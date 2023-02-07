@@ -7,9 +7,30 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h3>Score :</h3>
+    <div>
+    <h3>High Score :</h3>
+    <p id="affichageHighScore"></p>
+    </div>
+
+    <div>
+        <h3>Score :</h3>
+        <p id="affichageScore"></p>
+        </div>
+        <script>
+            // Récupération de la valeur stockée dans localStorage
+            let storedValueScore = localStorage.getItem("ScorePlayeur");
+            localStorage.setItem("ScorePlayeur", "testvaleurscore");
+
+            // Sélection de la balise HTML à mettre à jour
+            let pScore = document.getElementById("affichageScore");
+
+            // Mise à jour du contenu de la balise avec la valeur stockée
+            pScore.innerHTML = storedValueScore;
+        </script>
+
 
 <div class="grille"></div>
+
  
 
     <script src="app.js"></script>

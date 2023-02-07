@@ -19,8 +19,19 @@
             <div class="divn5">
                 <h2>My Hight score is:</h2>
                 <div>
-
+                    <p id="affichageHighScore"></p>
                 </div>
+                <script>
+                    // Récupération de la valeur stockée dans localStorage
+                    let storedValuehighscore = localStorage.getItem("hScore");
+                    localStorage.setItem("hScore", "testvaleurhighscore");
+
+                    // Sélection de la balise HTML à mettre à jour
+                    let pHscore = document.getElementById("affichageHighScore");
+
+                    // Mise à jour du contenu de la balise avec la valeur stockée
+                    pHscore.innerHTML = storedValuehighscore;
+                </script>
             </div>
         </div>
         <div class="divn6">
