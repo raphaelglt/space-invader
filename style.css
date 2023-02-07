@@ -15,7 +15,7 @@
         background-position-y: 500px;
     }
     to {
-        background-position-y: 4000px;
+        background-position-y: 3900px;
     }
 }
 
@@ -49,13 +49,16 @@ h3 {
 }
 .laser {
     background-color: orange;
+    position: absolute;
+    height: 35px;
+    width: 4px;
 }
 body {
     margin: 0;
     height: 100%;
     background: url(ressources/pexels-adam-krypel-6498994.jpg);
     background-position: center;
-    animation: background-defile 8s linear infinite;
+    animation: background-defile 7s linear infinite;
     overflow: hidden;
 }
 nav {
