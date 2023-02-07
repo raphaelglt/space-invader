@@ -158,6 +158,10 @@ setInterval(() => {
 
 //handle ennemies movement
 setInterval(() => {
+    if (ennemies.length === 0 && i>0) {
+      alert('win')
+    }
+
     ennemies.forEach((elt => {
       elt.checkCollision(player)
       elt.move(grid)
