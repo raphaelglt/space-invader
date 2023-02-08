@@ -21,12 +21,12 @@
             <h3>Score :</h3>
             <p id="affichageScore"></p>
             <ul>
-                <li>Accueil</li>
+                <li> <a href="home_page.html">Accueil</a> </li>
                 <li>Fin</li>
             </ul>
 
-            <h3>Pseudo du Playeur:</h3>
-            <p id="idPlayeur"></p>
+            <h3>Pseudo du Player:</h3>
+            <p id="idPlayer"></p>
         </nav>
         <div class="grille"></div>
     </div>    
@@ -51,8 +51,8 @@
 
     <script>
         // Récupération de la valeur stockée dans localStorage
-        let storedValueScore = localStorage.getItem("ScorePlayeur");
-        localStorage.setItem("ScorePlayeur", "");
+        let storedValueScore = localStorage.getItem("ScorePlayer");
+        localStorage.setItem("ScorePlayer", "");
 
         // Sélection de la balise HTML à mettre à jour
         let pScore = document.getElementById("affichageScore");
@@ -64,17 +64,17 @@
 
     <script>
         // Récupération de la valeur stockée dans localStorage
-        let storedValuePlayeur = localStorage.getItem("formData");
+        let storedValuePlayer = localStorage.getItem("formData");
                 //localStorage.setItem("formData", "testvaleurscore");
 
         // Parsing de l'objet JSON
-        let parsedValue = JSON.parse(storedValuePlayeur);
+        let parsedValue = JSON.parse(storedValuePlayer);
 
         // Sélection de la balise HTML à mettre à jour
-        let pPlayeur = document.getElementById("idPlayeur");
+        let pPlayer = document.getElementById("idPlayer");
 
         // Mise à jour du contenu de la balise avec la valeur stockée
-        pPlayeur.innerHTML = parsedValue.playeurname;
+        pPlayer.innerHTML = parsedValue.playername;
     </script>
 
 
