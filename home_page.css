@@ -1,0 +1,54 @@
+body{
+    background-color: #050426;
+}
+h1{
+    text-align: center;
+    color: #000080;
+}
+.start_button{
+    border-radius: 75%;
+    border:0;
+    width:250px;
+    height: 250px;
+}
+.divn2{
+    display: flex;
+    flex-direction: row;
+}
+.divn3{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+.divn4{
+    flex: 1;
+    position: absolute;
+    left: 22%;
+    top:22%;
+}
+.divn5{
+    flex: 1;
+    position: absolute;
+    left: 25%;
+    top:57%;
+}
+.divn6{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+.divn7{
+    flex: 1;
+    position: absolute;
+    left: 62.5%;
+    top:29%;
+}
+.divn8{
+    flex: 1;
+    position: absolute;
+    left: 62.25%;
+    top: 57%;
+}
+p,h2,h3,label{
+    color: white;
+}
