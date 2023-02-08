@@ -48,15 +48,17 @@ h3 {
     background-color: red;
 }
 .laser {
-    background-color: orange;
     position: absolute;
-    height: 35px;
-    width: 4px;
+    height: 70px;
+    width: 10px;
+    background: url(ressources/missile.png) center ;
+    background-size: cover;
 }
 body {
+    font-family: Verdana, sans-serif;
     margin: 0;
     height: 100%;
-    background: url(ressources/pexels-adam-krypel-6498994.jpg);
+    background: url(ressources/background-space.jpg);
     background-position: center;
     animation: background-defile 7s linear infinite;
     overflow: hidden;
@@ -72,4 +74,41 @@ nav {
 }
 html {
     height: 100%;
+}
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    padding-top: 100px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+.modal-content {
+background-color: #fefefe;
+margin: auto;
+padding: 20px;
+border: 1px solid #888;
+width: 80%;
+}
+#modal-button-container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+.modal-button {
+    cursor: pointer;
+    margin-right: 60px;
+    padding: 10px;
+    color: white;
+    border-radius: 5px;
+}
+.restart {
+    background-color: rgb(0, 170, 255);
+}
+.leave {
+    background-color: rgb(227, 56, 56);
 }
