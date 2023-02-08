@@ -54,10 +54,20 @@ let Entity = class Entity {
 
     if (this.type === "ennemy" && elm2.type === "player" && collision && playing) {
       playing = false
-      modal.style.display = "block";
+      handleModal("open", "Vous avez perdu contre les ennemis...")
     }
     
     return collision
+  }
+}
+
+function handleModal(type, msg="") {
+  if (type === "close") {
+    modal.style.display = "none";
+  } else if (type === "open") {
+    const endParagraph = document.getElementById('end-message')
+    endParagraph.innerHTML = msg
+    modal.style.display = "block";
   }
 }
 
@@ -74,7 +84,7 @@ function restartGame() {
   grid.removeChild(player.elt)
   player = generatePlayer()
   generateEnnemies()
-  modal.style.display = "none";
+  handleModal("close")
 
   playing = true
 }
@@ -187,7 +197,7 @@ document.addEventListener("keydown", (event) => {
 setInterval(() => {
   if (ennemies.length === 0 && playing && ennemiesCreated) {
     playing = false
-    alert('win')
+    handleModal("open", "Vous avez gagné contre les ennemis !!")
   }
 
   ennemies.forEach((elt => {
