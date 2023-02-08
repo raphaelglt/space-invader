@@ -40,9 +40,6 @@ let Entity = class Entity {
         this.elt.style.top = this.pos.bottom+"px"
       }
       grid.appendChild(this.elt)
-    } else {
-      alert('loose')
-      playing = true;
     }
   }
 
@@ -55,15 +52,33 @@ let Entity = class Entity {
       (elm1Rect.bottom >= elm2Rect.top &&
         elm1Rect.top <= elm2Rect.bottom);
 
-    if (this.type === "ennemy" && elm2.type === "player" && collision) {
-      console.log('eog')
+    if (this.type === "ennemy" && elm2.type === "player" && collision && playing) {
       playing = false
+      modal.style.display = "block";
     }
     
     return collision
   }
 }
-console.log(playing)
+
+var modal = document.getElementById("myModal");
+var span = document.getElementsByClassName("close")[0];
+
+span.onclick = function() {
+  
+  ennemies.forEach((ennemy) => {
+    grid.removeChild(ennemy.elt)
+  })
+  ennemies = []
+  ennemiesCreated = false
+
+  grid.removeChild(player.elt)
+  player = generatePlayer()
+  generateEnnemies()
+  modal.style.display = "none";
+
+  playing = true
+}
 
 const grid = document.getElementsByClassName('grille')[0]
 const audio = document.getElementById('music')
@@ -75,13 +90,46 @@ var gridRight = grid.getBoundingClientRect().right;
 
 function generatePlayer() {
   const playerImg = document.createElement('div')
+  playerImg.style.top = gridBottom-50+"px";
+  playerImg.style.left = (gridRight/2)+50+"px";
   grid.appendChild(playerImg)
   playerImg.setAttribute('class', 'tireur')
   return new Entity({bottom: gridBottom-50, left: (gridRight/2)+50}, playerImg, "player", null)
 }
-const player = generatePlayer()
-player.elt.style.top = player.pos.bottom+"px";
-player.elt.style.left = player.pos.left+"px";
+var player = generatePlayer()
+
+var ennemiesCreated = false
+function generateEnnemies() {
+  var i = 0
+  console.log('generate ennemies')
+  const intervalId = setInterval(() => {
+    console.log(i)
+    if (i < ennemiesNumber) {
+      ennemyImg = document.createElement('div')
+      grid.appendChild(ennemyImg)
+      ennemyImg.setAttribute('class', 'alien')
+      ennemies.push(new Entity({bottom: gridTop, left: gridLeft}, ennemyImg, "ennemy", "right"))
+
+      ennemyImg = document.createElement('div')
+      grid.appendChild(ennemyImg)
+      ennemyImg.setAttribute('class', 'alien')
+      ennemyImg.style.top = gridTop+50+"px"
+      ennemies.push(new Entity({bottom: gridTop+50, left: gridLeft}, ennemyImg, "ennemy", "right"))
+
+      ennemyImg = document.createElement('div')
+      grid.appendChild(ennemyImg)
+      ennemyImg.setAttribute('class', 'alien')
+      ennemyImg.style.top = gridTop+100+"px"
+      ennemies.push(new Entity({bottom: gridTop+100, left: gridLeft}, ennemyImg, "ennemy", "right"))
+
+      i++
+      ennemiesCreated = true;
+    } else {
+      clearInterval(intervalId)
+    }
+  }, 200);
+}
+generateEnnemies()  
 
 const playerSpeed = 30;
 const ennemySpeed = playerSpeed/10
@@ -131,54 +179,33 @@ document.addEventListener("keydown", (event) => {
 });
 
 //generate ennemies
-const ennemies = []
+var ennemies = []
 const ennemiesNumber = 10;
-var i = 0
-setInterval(() => {
-  if (i < ennemiesNumber) {
-    ennemyImg = document.createElement('div')
-    grid.appendChild(ennemyImg)
-    ennemyImg.setAttribute('class', 'alien')
-    ennemies.push(new Entity({bottom: gridTop, left: gridLeft}, ennemyImg, "ennemy", "right"))
-
-    ennemyImg = document.createElement('div')
-    grid.appendChild(ennemyImg)
-    ennemyImg.setAttribute('class', 'alien')
-    ennemyImg.style.top = gridTop+50+"px"
-    ennemies.push(new Entity({bottom: gridTop+50, left: gridLeft}, ennemyImg, "ennemy", "right"))
-
-    ennemyImg = document.createElement('div')
-    grid.appendChild(ennemyImg)
-    ennemyImg.setAttribute('class', 'alien')
-    ennemyImg.style.top = gridTop+100+"px"
-    ennemies.push(new Entity({bottom: gridTop+100, left: gridLeft}, ennemyImg, "ennemy", "right"))
-  }
-  i++  
-}, 200);
 
 //handle ennemies movement
 setInterval(() => {
-    if (ennemies.length === 0 && i>0) {
-      alert('win')
-    }
+  if (ennemies.length === 0 && playing && ennemiesCreated) {
+    playing = false
+    alert('win')
+  }
 
-    ennemies.forEach((elt => {
-      elt.checkCollision(player)
-      elt.move(grid)
-    }))
-    
-    missiles.forEach((missile => {
-      missile.move(grid)
-      ennemies.forEach((ennemy => {
-        if (missile.checkCollision(ennemy)) {
-          let indexMissile = missiles.indexOf(missile)
-          missiles.splice(indexMissile, 1)
-          grid.removeChild(missile.elt)
+  ennemies.forEach((elt => {
+    elt.checkCollision(player)
+    elt.move(grid)
+  }))
+  
+  missiles.forEach((missile => {
+    missile.move(grid)
+    ennemies.forEach((ennemy => {
+      if (missile.checkCollision(ennemy)) {
+        let indexMissile = missiles.indexOf(missile)
+        missiles.splice(indexMissile, 1)
+        grid.removeChild(missile.elt)
 
-          let indexEnnemy = ennemies.indexOf(ennemy)
-          ennemies.splice(indexEnnemy, 1)
-          grid.removeChild(ennemy.elt)
-        }
-      }))
+        let indexEnnemy = ennemies.indexOf(ennemy)
+        ennemies.splice(indexEnnemy, 1)
+        grid.removeChild(ennemy.elt)
+      }
     }))
+  }))
 }, 8)
