@@ -38,6 +38,22 @@
             // Mise à jour du contenu de la balise avec la valeur stockée
             pScore.innerHTML = storedValueScore;
         </script>
+    <h3>Pseudo du Playeur:</h3>
+    <p id="idPlayeur"></p>
+    <script>
+        // Récupération de la valeur stockée dans localStorage
+        let storedValuePlayeur = localStorage.getItem("formData");
+                //localStorage.setItem("formData", "testvaleurscore");
+    
+        // Parsing de l'objet JSON
+        let parsedValue = JSON.parse(storedValuePlayeur);
+    
+        // Sélection de la balise HTML à mettre à jour
+        let pPlayeur = document.getElementById("idPlayeur");
+    
+        // Mise à jour du contenu de la balise avec la valeur stockée
+        pPlayeur.innerHTML = parsedValue.playeurname;
+    </script>
 
 
 <div class="grille"></div>
@@ -56,23 +72,6 @@
         </nav>
         <div class="grille"></div>
     </div>    -->
- 
-<h3>Pseudo du Playeur:</h3>
-<p id="idPlayeur"></p>
-<script>
-    // Récupération de la valeur stockée dans localStorage
-    let storedValuePlayeur = localStorage.getItem("formData");
-            //localStorage.setItem("formData", "testvaleurscore");
-
-    // Parsing de l'objet JSON
-    let parsedValue = JSON.parse(storedValuePlayeur);
-
-    // Sélection de la balise HTML à mettre à jour
-    let pPlayeur = document.getElementById("idPlayeur");
-
-    // Mise à jour du contenu de la balise avec la valeur stockée
-    pPlayeur.innerHTML = parsedValue.playeurname;
-</script>
     <script src="app.js"></script>
 </body>
 </html>
