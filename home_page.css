@@ -3,13 +3,13 @@ body{
 }
 h1{
     text-align: center;
-    color: #000080;
+    color: #3939aa;
 }
 .start_button{
     border-radius: 75%;
     border:0;
-    width:250px;
-    height: 250px;
+    width:220px;
+    height: 220px;
 }
 .divn2{
     display: flex;

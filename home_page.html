@@ -36,15 +36,19 @@
         </div>
         <div class="divn6">
             <div class="divn7">
-                <h2>Pseudo du Playeur:</h2>
-                <form id="form_user">
-                    <label for="playeurname">pseudo</label>
-                    <input type="text" id="playeurname" name="playeurname"><br><br>
-                    <button id="playeurnamebutton">Changer le pseudo du joueur</button>
-                  </form>
-                  <script>
+                <h2>Pseudo du Player:</h2>
+                    <form id="form_user">
+                        <div>
+                            <label for="playername">pseudo</label>
+                            <input type="text" id="playername" name="playername"><br><br>
+                            <button id="playernamebutton">Changer le pseudo du joueur</button>
+                        </div>
+                        
+                    </form>
+                    
+                  <script>  
                     const form = document.getElementById("form_user");
-                    const submitButton = document.getElementById("playeurnamebutton");
+                    const submitButton = document.getElementById("playernamebutton");
 
                     submitButton.addEventListener("click", function() {
                     event.preventDefault();
