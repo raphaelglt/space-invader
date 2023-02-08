@@ -135,19 +135,19 @@ function generateEnnemies() {
       ennemyImg = document.createElement('div')
       grid.appendChild(ennemyImg)
       ennemyImg.setAttribute('class', 'alien')
-      ennemies.push(new Entity({bottom: gridTop, left: gridLeft}, ennemyImg, "ennemy", "right", 2))
+      ennemies.push(new Entity({bottom: gridTop, left: gridLeft}, ennemyImg, "ennemy", "right"))
 
       ennemyImg = document.createElement('div')
       grid.appendChild(ennemyImg)
       ennemyImg.setAttribute('class', 'alien')
       ennemyImg.style.top = gridTop+50+"px"
-      ennemies.push(new Entity({bottom: gridTop+50, left: gridLeft}, ennemyImg, "ennemy", "right", 2))
+      ennemies.push(new Entity({bottom: gridTop+50, left: gridLeft}, ennemyImg, "ennemy", "right"))
 
       ennemyImg = document.createElement('div')
       grid.appendChild(ennemyImg)
       ennemyImg.setAttribute('class', 'alien')
       ennemyImg.style.top = gridTop+100+"px"
-      ennemies.push(new Entity({bottom: gridTop+100, left: gridLeft}, ennemyImg, "ennemy", "right", 2))
+      ennemies.push(new Entity({bottom: gridTop+100, left: gridLeft}, ennemyImg, "ennemy", "right"))
 
       i++
       ennemiesCreated = true;
@@ -242,9 +242,13 @@ setInterval(() => {
         if (ennemy.lifepoints > 1) {
           ennemy.lifepoints--
         } else {
+          console.log('ennemy touch')
+          ennemy.elt.setAttribute('class', 'boom')
           let indexEnnemy = ennemies.indexOf(ennemy)
           ennemies.splice(indexEnnemy, 1)
-          grid.removeChild(ennemy.elt)
+          setTimeout(() => {
+            grid.removeChild(ennemy.elt)
+          }, 500)
         }
       }
     }))

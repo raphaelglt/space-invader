@@ -53,7 +53,12 @@ h3 {
     position: absolute; 
 }
 .boom {
-    background-color: red;
+    background: url(ressources/explosion-gif.gif);
+    background-position: center;
+    background-size: contain;
+    width: 40px;
+    height: 40px;
+    position: absolute; 
 }
 .laser {
     position: absolute;
