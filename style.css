@@ -44,6 +44,14 @@ h3 {
     height: 40px;
     position: absolute; 
 }
+.boss {
+    background: url(ressources/alien.gif);
+    background-position: center;
+    background-size: contain;
+    width: 100px;
+    height: 100px;
+    position: absolute; 
+}
 .boom {
     background-color: red;
 }

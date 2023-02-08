@@ -4,18 +4,22 @@ var gridTop = grid.getBoundingClientRect().top;
 var gridBottom = grid.getBoundingClientRect().bottom;
 var gridLeft = grid.getBoundingClientRect().left;
 var gridRight = grid.getBoundingClientRect().right;
-console.log(gridBottom)
+//set speed
+const playerSpeed = 30;
+const ennemySpeed = playerSpeed/10
+const missileSpeed = playerSpeed/3
 
-//import { Entity } from "./entity.js"
 let Entity = class Entity {
-  constructor(pos, elt, type, direction) {
+  constructor(pos, elt, type, direction, lifepoints=1) {
     this.elt = elt;
     this.pos = pos;
     this.type = type;
     this.direction = direction
+    this.lifepoints = lifepoints
   }
 
   move(grid) {
+    var replace = true;
     if (playing || this.type !== "ennemy") {
       grid.removeChild(this.elt)
       if (this.direction === "right") {
@@ -46,15 +50,18 @@ let Entity = class Entity {
           }
         }
       }
-      if (this.direction === "up") {
-        if (this.pos.bottom<-50) {
-          missiles.shift()
-        }
-        this.pos.bottom -= missileSpeed;
-        this.elt.style.top = this.pos.bottom+"px"
-      }
       grid.appendChild(this.elt)
+      if (this.direction === "up") {
+        if (this.pos.bottom<-100) {
+          replace = false
+          missiles.shift()
+        } else {
+          this.pos.bottom -= missileSpeed;
+          this.elt.style.top = this.pos.bottom+"px"
+        }
+      }
     }
+    grid.appendChild(this.elt)
   }
 
   checkCollision(elm2) {
@@ -95,6 +102,11 @@ function restartGame() {
   ennemies = []
   ennemiesCreated = false
 
+  var missileDiv = grid.getElementsByClassName("laser");
+  while (missileDiv[0]) {
+    grid.removeChild(missileDiv[0]);
+  }
+
   grid.removeChild(player.elt)
   player = generatePlayer()
   generateEnnemies()
@@ -123,19 +135,19 @@ function generateEnnemies() {
       ennemyImg = document.createElement('div')
       grid.appendChild(ennemyImg)
       ennemyImg.setAttribute('class', 'alien')
-      ennemies.push(new Entity({bottom: gridTop, left: gridLeft}, ennemyImg, "ennemy", "right"))
+      ennemies.push(new Entity({bottom: gridTop, left: gridLeft}, ennemyImg, "ennemy", "right", 2))
 
       ennemyImg = document.createElement('div')
       grid.appendChild(ennemyImg)
       ennemyImg.setAttribute('class', 'alien')
       ennemyImg.style.top = gridTop+50+"px"
-      ennemies.push(new Entity({bottom: gridTop+50, left: gridLeft}, ennemyImg, "ennemy", "right"))
+      ennemies.push(new Entity({bottom: gridTop+50, left: gridLeft}, ennemyImg, "ennemy", "right", 2))
 
       ennemyImg = document.createElement('div')
       grid.appendChild(ennemyImg)
       ennemyImg.setAttribute('class', 'alien')
       ennemyImg.style.top = gridTop+100+"px"
-      ennemies.push(new Entity({bottom: gridTop+100, left: gridLeft}, ennemyImg, "ennemy", "right"))
+      ennemies.push(new Entity({bottom: gridTop+100, left: gridLeft}, ennemyImg, "ennemy", "right", 2))
 
       i++
       ennemiesCreated = true;
@@ -146,50 +158,52 @@ function generateEnnemies() {
 }
 generateEnnemies()  
 
-//set speed
-const playerSpeed = 30;
-const ennemySpeed = playerSpeed/10
-const missileSpeed = playerSpeed/3
-
-const missiles = []
+var missiles = []
 
 //generate ennemies
 var ennemies = []
 const ennemiesNumber = 10;
+var map = {}; // You could also use an array
 
 //handle player input
 document.addEventListener("keydown", (event) => {
-  if (playing) {
+  
+    onkeydown = onkeyup = function(e){
+    e = e || event; // to deal with IE
+    map[e.keyCode] = e.type == 'keydown';
+    if (playing) {
     grid.removeChild(player.elt);
-      if (event.isComposing || event.keyCode === 37) {
+      if (map["37"] === true) {
         //moving left
         if (player.pos.left > gridLeft+5) {
           player.pos.left -= playerSpeed;
           player.elt.style.left = player.pos.left+"px"
         }  
       }
-      if (event.isComposing || event.keyCode === 39) {
+      if (map["39"] === true) {
         //moving right
         if (player.pos.left < gridRight-50) {
           player.pos.left += playerSpeed;
           player.elt.style.left = player.pos.left+"px"
         }  
       }
-      if (event.isComposing || event.keyCode === 40) {
+      if (map["40"] === true) {
         //moving bottom
         if (player.pos.bottom < gridBottom-50) {
           player.pos.bottom += playerSpeed;
           player.elt.style.top = player.pos.bottom+"px"
         }  
       }
-      if (event.isComposing || event.keyCode === 38) {
+      if (map["38"] === true) {
         //moving top
         if (player.pos.bottom > 0) {
           player.pos.bottom -= playerSpeed;
           player.elt.style.top = player.pos.bottom+"px"     
         }  
       }
-      if (event.isComposing || event.keyCode === 32) {
+      if (map["32"] === true) {
+        const pewSound = new Audio("./ressources/pew.mp3")
+        pewSound.play()
         let missileImg = document.createElement('div')
         grid.appendChild(missileImg)
         missileImg.setAttribute('class', 'laser')
@@ -198,7 +212,8 @@ document.addEventListener("keydown", (event) => {
         missiles.push(new Entity({bottom: player.pos.bottom, left: player.pos.left}, missileImg, "missile", "up"))
       }
     grid.appendChild(player.elt)
-    }  
+  } 
+  }
 });
 
 //handle ennemies movement
@@ -217,13 +232,20 @@ setInterval(() => {
     missile.move(grid)
     ennemies.forEach((ennemy => {
       if (missile.checkCollision(ennemy)) {
+        const explosionSound = new Audio("./ressources/explosion.mp3")
+        explosionSound.play()
+
         let indexMissile = missiles.indexOf(missile)
         missiles.splice(indexMissile, 1)
         grid.removeChild(missile.elt)
-
-        let indexEnnemy = ennemies.indexOf(ennemy)
-        ennemies.splice(indexEnnemy, 1)
-        grid.removeChild(ennemy.elt)
+        
+        if (ennemy.lifepoints > 1) {
+          ennemy.lifepoints--
+        } else {
+          let indexEnnemy = ennemies.indexOf(ennemy)
+          ennemies.splice(indexEnnemy, 1)
+          grid.removeChild(ennemy.elt)
+        }
       }
     }))
   }))
