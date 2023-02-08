@@ -64,8 +64,7 @@ let Entity = class Entity {
 var modal = document.getElementById("myModal");
 var span = document.getElementsByClassName("close")[0];
 
-span.onclick = function() {
-  
+function restartGame() {
   ennemies.forEach((ennemy) => {
     grid.removeChild(ennemy.elt)
   })
@@ -101,9 +100,7 @@ var player = generatePlayer()
 var ennemiesCreated = false
 function generateEnnemies() {
   var i = 0
-  console.log('generate ennemies')
   const intervalId = setInterval(() => {
-    console.log(i)
     if (i < ennemiesNumber) {
       ennemyImg = document.createElement('div')
       grid.appendChild(ennemyImg)
@@ -131,56 +128,60 @@ function generateEnnemies() {
 }
 generateEnnemies()  
 
+//set speed
 const playerSpeed = 30;
 const ennemySpeed = playerSpeed/10
 const missileSpeed = playerSpeed/3
-const missiles = []
 
-//handle player input
-document.addEventListener("keydown", (event) => {
-  grid.removeChild(player.elt);
-    if (event.isComposing || event.keyCode === 37) {
-      //moving left
-      if (player.pos.left > gridLeft+5) {
-        player.pos.left -= playerSpeed;
-        player.elt.style.left = player.pos.left+"px"
-      }  
-    }
-    if (event.isComposing || event.keyCode === 39) {
-      //moving right
-      if (player.pos.left < gridRight-50) {
-        player.pos.left += playerSpeed;
-        player.elt.style.left = player.pos.left+"px"
-      }  
-    }
-    if (event.isComposing || event.keyCode === 40) {
-      //moving bottom
-      if (player.pos.bottom < gridBottom-50) {
-        player.pos.bottom += playerSpeed;
-        player.elt.style.top = player.pos.bottom+"px"
-      }  
-    }
-    if (event.isComposing || event.keyCode === 38) {
-      //moving top
-      if (player.pos.bottom > 0) {
-        player.pos.bottom -= playerSpeed;
-        player.elt.style.top = player.pos.bottom+"px"     
-      }  
-    }
-    if (event.isComposing || event.keyCode === 32) {
-      let missileImg = document.createElement('div')
-      grid.appendChild(missileImg)
-      missileImg.setAttribute('class', 'laser')
-      missileImg.style.left = player.pos.left+22.5+"px"
-      missileImg.style.top = player.pos.bottom+"px"
-      missiles.push(new Entity({bottom: player.pos.bottom, left: player.pos.left}, missileImg, "missile", "up"))
-    }
-  grid.appendChild(player.elt)
-});
+const missiles = []
 
 //generate ennemies
 var ennemies = []
 const ennemiesNumber = 10;
+
+//handle player input
+document.addEventListener("keydown", (event) => {
+  if (playing) {
+    grid.removeChild(player.elt);
+      if (event.isComposing || event.keyCode === 37) {
+        //moving left
+        if (player.pos.left > gridLeft+5) {
+          player.pos.left -= playerSpeed;
+          player.elt.style.left = player.pos.left+"px"
+        }  
+      }
+      if (event.isComposing || event.keyCode === 39) {
+        //moving right
+        if (player.pos.left < gridRight-50) {
+          player.pos.left += playerSpeed;
+          player.elt.style.left = player.pos.left+"px"
+        }  
+      }
+      if (event.isComposing || event.keyCode === 40) {
+        //moving bottom
+        if (player.pos.bottom < gridBottom-50) {
+          player.pos.bottom += playerSpeed;
+          player.elt.style.top = player.pos.bottom+"px"
+        }  
+      }
+      if (event.isComposing || event.keyCode === 38) {
+        //moving top
+        if (player.pos.bottom > 0) {
+          player.pos.bottom -= playerSpeed;
+          player.elt.style.top = player.pos.bottom+"px"     
+        }  
+      }
+      if (event.isComposing || event.keyCode === 32) {
+        let missileImg = document.createElement('div')
+        grid.appendChild(missileImg)
+        missileImg.setAttribute('class', 'laser')
+        missileImg.style.left = player.pos.left+22.5+"px"
+        missileImg.style.top = player.pos.bottom+"px"
+        missiles.push(new Entity({bottom: player.pos.bottom, left: player.pos.left}, missileImg, "missile", "up"))
+      }
+    grid.appendChild(player.elt)
+    }  
+});
 
 //handle ennemies movement
 setInterval(() => {
