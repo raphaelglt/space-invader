@@ -1,4 +1,10 @@
 var playing = true;
+const grid = document.getElementsByClassName('grille')[0]
+var gridTop = grid.getBoundingClientRect().top;
+var gridBottom = grid.getBoundingClientRect().bottom;
+var gridLeft = grid.getBoundingClientRect().left;
+var gridRight = grid.getBoundingClientRect().right;
+console.log(gridBottom)
 
 //import { Entity } from "./entity.js"
 let Entity = class Entity {
@@ -20,6 +26,10 @@ let Entity = class Entity {
           this.pos.bottom += 150;
           this.elt.style.top = this.pos.bottom+"px"
           this.direction = "left"
+          if (this.pos.bottom > gridBottom) {
+            playing = false
+            handleModal("open", "Les ennemis sont sortis...")
+          }
         }
       }
       if (this.direction === "left") {
@@ -30,6 +40,10 @@ let Entity = class Entity {
           this.pos.bottom += 150;
           this.elt.style.top = this.pos.bottom+"px"
           this.direction = "right"
+          if (this.pos.bottom > gridBottom) {
+            playing = false
+            handleModal("open", "Les ennemis sont sortis...")
+          }
         }
       }
       if (this.direction === "up") {
@@ -89,13 +103,7 @@ function restartGame() {
   playing = true
 }
 
-const grid = document.getElementsByClassName('grille')[0]
 const audio = document.getElementById('music')
-
-var gridTop = grid.getBoundingClientRect().top;
-var gridBottom = grid.getBoundingClientRect().bottom;
-var gridLeft = grid.getBoundingClientRect().left;
-var gridRight = grid.getBoundingClientRect().right;
 
 function generatePlayer() {
   const playerImg = document.createElement('div')
