@@ -12,7 +12,7 @@ html {
   
   .login-box {
     position: absolute;
-    top: 41%;
+    top: 58%;
     left: 50%;
     width: 404px;
     padding: 50px;
@@ -205,14 +205,14 @@ h1{
 }
 .divn4{
     position: absolute;
-    left: 45%;
-    top: 75%;
+    left: 43%;
+    top: 88%;
 }
 .divn5{
     flex: 1;
     position: absolute;
-    left: 8%;
-    top:25%;
+    left: 10%;
+    top: 41%;
 }
 .divn6{
     flex: 1;
@@ -229,9 +229,9 @@ h1{
 
   flex: 1;
     position: absolute;
-    
+    box-shadow: 0 0 0 0 rgba(199, 202, 195, 0.7);
     left: 75%;
-    top: 25%;
+    top: 41%;
 }
 p,h2,h3,label{
     color: white;
@@ -240,12 +240,12 @@ p,h2,h3,label{
 
 .coeur {
   text-align: center;
-  padding: 12px 24px;
+  padding: 30px 50px;
   color: #fff;
   border-radius: 5px;
   background: #141e30;
-  box-shadow: 0 0 0 0 rgba(199, 202, 195, 0.7);
-  animation: battement 2s infinite cubic-bezier(.66, 0, 0, 1);
+  box-shadow: 0 0 0 0 rgba(173, 176, 170, 0.7);
+  animation: battement 1s infinite cubic-bezier(.66, 0, 0, 1);
   text-decoration: none;
 }
 
@@ -255,20 +255,20 @@ p,h2,h3,label{
   }
 }
 
-.easy{
-  position: absolute;
-  top: 61px;
+.b{
+  text-align: center;
+  padding: 10px 20px;
+  color: #fff;
+  border-radius: 5px;
+  text-decoration: none;
+  
+  background: #253348;
+  color: #fff;
 }
 
-.medium{
-  position: absolute;
-  top: 80px;
-}
-
-.hard{
-  position: absolute;
-  top: 100px;
-
+.titre{
+  text-align: center;
+  
 }
 
 
