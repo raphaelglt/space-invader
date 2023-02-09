@@ -10,7 +10,15 @@ const ennemySpeed = playerSpeed/10
 const missileSpeed = playerSpeed/3
 
 const gamemode = "normal"
-const difficulty = 4
+const difficulty = 1
+
+const ennemyMissileInterval = null
+function intervalManager(flag, animate, time) {
+  if(flag)
+    intervalID =  setInterval(animate, time);
+  else
+    clearInterval(intervalID);
+}
 
 let Entity = class Entity {
   constructor(pos, elt, type, direction, speed, lifepoints=1) {
@@ -35,6 +43,7 @@ let Entity = class Entity {
           this.elt.style.top = this.pos.bottom+"px"
           this.direction = "left"
           if (this.pos.bottom > gridBottom) {
+            intervalManager(false)
             playing = false
             handleModal("open", "Les ennemis sont sortis...")
           }
@@ -49,6 +58,7 @@ let Entity = class Entity {
           this.elt.style.top = this.pos.bottom+"px"
           this.direction = "right"
           if (this.pos.bottom > gridBottom) {
+            intervalManager(false)
             playing = false
             handleModal("open", "Les ennemis sont sortis...")
           }
@@ -56,11 +66,21 @@ let Entity = class Entity {
       }
       grid.appendChild(this.elt)
       if (this.direction === "up") {
+        console.log('dingz')
         if (this.pos.bottom<-100) {
           replace = false
           missiles.shift()
         } else {
           this.pos.bottom -= this.speed;
+          this.elt.style.top = this.pos.bottom+"px"
+        }
+      }
+      if (this.direction === "down") {
+        if (this.pos.bottom>gridBottom) {
+          replace = false
+          missiles.shift()
+        } else {
+          this.pos.bottom += this.speed;
           this.elt.style.top = this.pos.bottom+"px"
         }
       }
@@ -78,6 +98,7 @@ let Entity = class Entity {
         elm1Rect.top <= elm2Rect.bottom);
 
     if (this.type === "ennemy" && elm2.type === "player" && collision && playing) {
+      intervalManager(false)
       playing = false
       handleModal("open", "Vous avez perdu contre les ennemis...")
     }
@@ -100,6 +121,7 @@ var modal = document.getElementById("myModal");
 var span = document.getElementsByClassName("close")[0];
 
 function restartGame() {
+  console.log('restart')
   ennemies.forEach((ennemy) => {
     grid.removeChild(ennemy.elt)
   })
@@ -111,11 +133,13 @@ function restartGame() {
     grid.removeChild(missileDiv[0]);
   }
 
-  grid.removeChild(player.elt)
+  console.log(player.elt.getAttribute('class') === "boom")
+  if (player.elt.getAttribute('class') === "player") grid.removeChild(player.elt)
   player = generatePlayer()
   generateEnnemies()
   handleModal("close")
 
+  intervalManager(true, sendMissileEnnemy, 2000)
   playing = true
 }
 
@@ -253,9 +277,23 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
+function sendMissileEnnemy() {
+  const randomEnnemy = Math.floor(Math.random() * ennemies.length)
+  if (typeof randomEnnemy !== "undefined") {
+    let missileImg = document.createElement('div')
+    grid.appendChild(missileImg)
+    missileImg.setAttribute('class', 'ennemy-laser')
+    missileImg.style.left = ennemies[randomEnnemy].pos.left+22.5+"px"
+    missileImg.style.top = 0+"px"
+    missiles.push(new Entity({bottom: 0, left: ennemies[randomEnnemy].pos.left}, missileImg, "missile-ennemy", "down", missileSpeed/2))
+  }
+}
+intervalManager(true, sendMissileEnnemy, 2000)
+
 //handle ennemies movement
 setInterval(() => {
   if (ennemies.length === 0 && playing && ennemiesCreated) {
+    intervalManager(false)
     playing = false
     handleModal("open", "Vous avez gagné contre les ennemis !!")
   }
@@ -267,8 +305,17 @@ setInterval(() => {
   
   missiles.forEach((missile => {
     missile.move(grid)
+    if (missile.checkCollision(player) && missile.type === "missile-ennemy") {
+      handleModal('open', "Les ennemis vous ont tués")
+      intervalManager(false)
+      playing = false
+      player.elt.setAttribute('class', 'boom')
+      setTimeout(() => {
+        grid.removeChild(player.elt)
+      }, 500)
+    }
     ennemies.forEach((ennemy => {
-      if (missile.checkCollision(ennemy)) {
+      if (missile.checkCollision(ennemy) && missile.type === "missile") {
         const explosionSound = new Audio("./ressources/explosion.mp3")
         //explosionSound.play()
 

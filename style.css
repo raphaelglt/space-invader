@@ -64,8 +64,8 @@ h3 {
     background: url(ressources/ultimate-boss.gif);
     background-position: center;
     background-size: cover;
-    width: 400px;
-    height: 400px;
+    width: 500px;
+    height: 350px;
     position: absolute; 
 }
 .boom {
@@ -82,6 +82,14 @@ h3 {
     width: 10px;
     background: url(ressources/missile.png) center ;
     background-size: cover;
+}
+.ennemy-laser {
+    position: absolute;
+    height: 70px;
+    width: 10px;
+    background: url(ressources/missile.png) center ;
+    background-size: cover;
+    transform: rotate(180deg);
 }
 body {
     font-family: Verdana, sans-serif;
