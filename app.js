@@ -10,7 +10,7 @@ const ennemySpeed = playerSpeed/10
 const missileSpeed = playerSpeed/3
 
 const gamemode = "normal"
-const difficulty = 1
+const difficulty = 3
 
 const ennemyMissileInterval = null
 function intervalManager(flag, animate, time) {
@@ -66,7 +66,6 @@ let Entity = class Entity {
       }
       grid.appendChild(this.elt)
       if (this.direction === "up") {
-        console.log('dingz')
         if (this.pos.bottom<-100) {
           replace = false
           missiles.shift()
@@ -78,7 +77,7 @@ let Entity = class Entity {
       if (this.direction === "down") {
         if (this.pos.bottom>gridBottom) {
           replace = false
-          missiles.shift()
+          missilesEnnemy.shift()
         } else {
           this.pos.bottom += this.speed;
           this.elt.style.top = this.pos.bottom+"px"
@@ -121,10 +120,10 @@ var modal = document.getElementById("myModal");
 var span = document.getElementsByClassName("close")[0];
 
 function restartGame() {
-  console.log('restart')
   ennemies.forEach((ennemy) => {
     grid.removeChild(ennemy.elt)
   })
+  missilesEnnemy = []
   ennemies = []
   ennemiesCreated = false
 
@@ -133,8 +132,9 @@ function restartGame() {
     grid.removeChild(missileDiv[0]);
   }
 
-  console.log(player.elt.getAttribute('class') === "boom")
-  if (player.elt.getAttribute('class') === "player") grid.removeChild(player.elt)
+  if (player.elt.getAttribute('class') === "tireur") {
+    grid.removeChild(player.elt)
+  }
   player = generatePlayer()
   generateEnnemies()
   handleModal("close")
@@ -220,6 +220,7 @@ function generateEnnemies() {
 }
 generateEnnemies()  
 
+var missilesEnnemy = []
 var missiles = []
 
 //generate ennemies
@@ -284,8 +285,10 @@ function sendMissileEnnemy() {
     grid.appendChild(missileImg)
     missileImg.setAttribute('class', 'ennemy-laser')
     missileImg.style.left = ennemies[randomEnnemy].pos.left+22.5+"px"
+    missileImg.style.top = ennemies[randomEnnemy].pos.bottom+"px"
+    console.log(ennemies[randomEnnemy].pos)
     missileImg.style.top = 0+"px"
-    missiles.push(new Entity({bottom: 0, left: ennemies[randomEnnemy].pos.left}, missileImg, "missile-ennemy", "down", missileSpeed/2))
+    missilesEnnemy.push(new Entity({bottom: ennemies[randomEnnemy].pos.bottom, left: ennemies[randomEnnemy].pos.left}, missileImg, "missile-ennemy", "down", missileSpeed/2))
   }
 }
 intervalManager(true, sendMissileEnnemy, 2000)
@@ -302,8 +305,8 @@ setInterval(() => {
     elt.checkCollision(player)
     elt.move(grid)
   }))
-  
-  missiles.forEach((missile => {
+
+  missilesEnnemy.forEach((missile) => {
     missile.move(grid)
     if (missile.checkCollision(player) && missile.type === "missile-ennemy") {
       handleModal('open', "Les ennemis vous ont tués")
@@ -314,6 +317,10 @@ setInterval(() => {
         grid.removeChild(player.elt)
       }, 500)
     }
+  })
+  
+  missiles.forEach((missile => {
+    missile.move(grid)
     ennemies.forEach((ennemy => {
       if (missile.checkCollision(ennemy) && missile.type === "missile") {
         const explosionSound = new Audio("./ressources/explosion.mp3")
