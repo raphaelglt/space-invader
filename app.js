@@ -87,6 +87,7 @@ let Entity = class Entity {
     grid.appendChild(this.elt)
   }
 
+
   checkCollision(elm2) {
     var elm1Rect = this.elt.getBoundingClientRect();
     var elm2Rect = elm2.elt.getBoundingClientRect();
@@ -113,7 +114,11 @@ function handleModal(type, msg="") {
     const endParagraph = document.getElementById('end-message')
     endParagraph.innerHTML = msg
     modal.style.display = "block";
+
+   
   }
+  
+  
 }
 
 var modal = document.getElementById("myModal");
@@ -344,3 +349,20 @@ setInterval(() => {
     }))
   }))
 }, 8)
+
+
+
+
+setInterval(() => {
+  ennemies.forEach(ennemy => {
+    if (player.checkCollision(ennemy)) {
+      console.log('Player died!');
+      
+    }
+  });
+}, 16);
+
+
+
+
+
