@@ -85,8 +85,9 @@
                
                 <button id="easy-button" class="b">Easy</button>
                 <button id="medium-button" class="b">Medium</button>
+                <button id="hard-button" class="b">Hard</button>
                 <button id="expert-button" class="b">Expert</button>
-               
+                
                 
             </div >
 
@@ -95,23 +96,28 @@
               
                     const easyButton = document.getElementById("easy-button");
                     const mediumButton = document.getElementById("medium-button");
+                    const hardButton = document.getElementById("hard-button");
                     const expertButton = document.getElementById("expert-button");
     
-                    easyButton.addEventListener("click", function() {
-                        localStorage.setItem("level", "easy");
-                        console.log(localStorage.getItem("level"));
+                    easyButton.addEventListener("click", () => {
+                        sessionStorage.setItem("level", 1);
+                        console.log(sessionStorage.getItem("level"));
                     });
     
                     mediumButton.addEventListener("click", function() {
-                        localStorage.setItem("level", "medium");
-                        console.log(localStorage.getItem("level"));
+                        sessionStorage.setItem("level", 2);
+                        console.log(sessionStorage.getItem("level"));
                     });
+
+                    hardButton.addEventListener('click', () => {
+                        sessionStorage.setItem("level", 3);
+                        console.log(sessionStorage.getItem("level"));
+                    })
     
                     expertButton.addEventListener("click", function() {
-                            localStorage.setItem("level", "expert");
-                            console.log(localStorage.getItem("level"));
+                        sessionStorage.setItem("level", 4);
+                        console.log(sessionStorage.getItem("level"));
                     });
-                    console.log(localStorage.getItem("level"));
     
     
                 </script>

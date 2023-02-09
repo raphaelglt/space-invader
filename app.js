@@ -11,7 +11,11 @@ const ennemySpeed = playerSpeed/10
 const missileSpeed = playerSpeed/3
 
 const gamemode = "normal"
-const difficulty = 3
+var difficulty = 1
+
+if (sessionStorage.getItem("level")) {
+  difficulty = parseInt(sessionStorage.getItem("level"))
+}
 
 const ennemyMissileInterval = null
 function intervalManager(flag, animate, time) {
@@ -306,7 +310,6 @@ function sendMissileEnnemy() {
     missileImg.setAttribute('class', 'ennemy-laser')
     missileImg.style.left = ennemies[randomEnnemy].pos.left+22.5+"px"
     missileImg.style.top = ennemies[randomEnnemy].pos.bottom+"px"
-    console.log(ennemies[randomEnnemy].pos)
     missileImg.style.top = 0+"px"
     missilesEnnemy.push(new Entity({bottom: ennemies[randomEnnemy].pos.bottom, left: ennemies[randomEnnemy].pos.left}, missileImg, "missile-ennemy", "down", missileSpeed/2))
   }
@@ -366,8 +369,6 @@ setInterval(() => {
 
         var scorevaleur=count_score;
         var hscorevaleur=localStorage.getItem("hScore");
-        console.log("hs : "+hscorevaleur)
-        console.log('score : '+scorevaleur)
         if(scorevaleur>hscorevaleur){
           localStorage.setItem("hScore", scorevaleur);
         }
@@ -399,17 +400,3 @@ setInterval(function () {
   textElement.textContent = storedValue;
 
 }, 10 );
-
-setInterval(() => {
-  ennemies.forEach(ennemy => {
-    if (player.checkCollision(ennemy)) {
-      console.log('Player died!');
-      
-    }
-  });
-}, 16);
-
-
-
-
-
