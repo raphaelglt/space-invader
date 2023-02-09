@@ -1,5 +1,20 @@
+header{
+    background-color: rgb(71, 63, 189);
+    top: 0;
+    left: 0;
+    right: 0;
+}
+footer{
+    background-color: rgb(28, 24, 163);
+}
+.h2footer{
+    position: absolute;
+    left: 44%;
+    top:80%;
+    
+}
 body{
-    background-color: #050426;
+    background-color: rgb(5, 4, 38);
 }
 h1{
     text-align: center;

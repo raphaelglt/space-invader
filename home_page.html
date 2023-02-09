@@ -8,90 +8,89 @@
     <title>Home Page space invaders</title>
 </head>
 <body>
-    
+    <header>
         <h1>Page d'accueil space invaders</h1>
-    
-    <div class="divn2">
-        <div class="divn3">
-            <div class="divn4">
-                <a href="index.html"><img src="ressources/start_button2.png" alt="start_button" class="start_button"></a>
-            </div>
-            <div class="divn5">
-                <h2>My Hight score is:</h2>
-                <div>
-                    <p id="affichageHighScore"></p>
+    </header>
+    <main class="mainclass">
+        <div class="divn2">
+            <div class="divn3">
+                <div class="divn4">
+                    <a href="index.html"><img src="ressources/start_button2.png" alt="start_button" class="start_button"></a>
                 </div>
-                <script>
-                    // Récupération de la valeur stockée dans localStorage
-                    let storedValuehighscore = localStorage.getItem("hScore");
-                    localStorage.setItem("hScore", "testvaleurhighscore");
-
-                    // Sélection de la balise HTML à mettre à jour
-                    let pHscore = document.getElementById("affichageHighScore");
-
-                    // Mise à jour du contenu de la balise avec la valeur stockée
-                    pHscore.innerHTML = storedValuehighscore;
-                </script>
+                <div class="divn5">
+                    <h2>My Hight score is:</h2>
+                    <div>
+                        <p id="affichageHighScore"></p>
+                    </div>
+                    <script>
+                        // Récupération de la valeur stockée dans localStorage
+                        let storedValuehighscore = localStorage.getItem("hScore");
+                        // Sélection de la balise HTML à mettre à jour
+                        let pHscore = document.getElementById("affichageHighScore");
+                        // Mise à jour du contenu de la balise avec la valeur stockée
+                        pHscore.innerHTML = storedValuehighscore;
+                    </script>
+                </div>
             </div>
-        </div>
-        <div class="divn6">
-            <div class="divn7">
-                <h2>Pseudo du Playeur:</h2>
-                <form id="form_user">
-                    <label for="playeurname">pseudo</label>
-                    <input type="text" id="playeurname" name="playeurname"><br><br>
-                    <button id="playeurnamebutton">Changer le pseudo du joueur</button>
-                  </form>
-                  <script>
-                    const form = document.getElementById("form_user");
-                    const submitButton = document.getElementById("playeurnamebutton");
+            <div class="divn6">
+                <div class="divn7">
+                    <h2>Pseudo du Playeur:</h2>
+                    <form id="form_user">
+                        <label for="playeurname">pseudo</label>
+                        <input type="text" id="playeurname" name="playeurname"><br><br>
+                        <button id="playeurnamebutton">Changer le pseudo du joueur</button>
+                    </form>
+                    <script>
+                        const form = document.getElementById("form_user");
+                        const submitButton = document.getElementById("playeurnamebutton");
 
-                    submitButton.addEventListener("click", function() {
-                    event.preventDefault();
-                  
-                    const formData = new FormData(form);
-                    const data = {};
-                  
-                    for (const [key, value] of formData.entries()) {
-                        data[key] = value;
-                    }
-                  
-                      localStorage.setItem("formData", JSON.stringify(data));
-                      console.log(localStorage.getItem("formData"));
-                    });
-                  </script>  
-            </div>
-            <div class="divn8">
-                <h2>Choix Difficulté</h2>
-                <button id="easy-button">Easy</button>
-                <button id="medium-button">Medium</button>
-                <button id="expert-button">Expert</button>
-                <script>
-              
-                    const easyButton = document.getElementById("easy-button");
-                    const mediumButton = document.getElementById("medium-button");
-                    const expertButton = document.getElementById("expert-button");
-    
-                    easyButton.addEventListener("click", function() {
-                        localStorage.setItem("level", "easy");
-                        console.log(localStorage.getItem("level"));
-                    });
-    
-                    mediumButton.addEventListener("click", function() {
-                        localStorage.setItem("level", "medium");
-                        console.log(localStorage.getItem("level"));
-                    });
-    
-                    expertButton.addEventListener("click", function() {
-                            localStorage.setItem("level", "expert");
+                        submitButton.addEventListener("click", function() {
+                        event.preventDefault();
+                    
+                        const formData = new FormData(form);
+                        const data = {};
+                    
+                        for (const [key, value] of formData.entries()) {
+                            data[key] = value;
+                        }
+                    
+                        localStorage.setItem("formData", JSON.stringify(data));
+                        console.log(localStorage.getItem("formData"));
+                        });
+                    </script>  
+                </div>
+                <div class="divn8">
+                    <h2>Choix Difficulté</h2>
+                    <button id="easy-button">Easy</button>
+                    <button id="medium-button">Medium</button>
+                    <button id="expert-button">Expert</button>
+                    <script>
+                        const easyButton = document.getElementById("easy-button");
+                        const mediumButton = document.getElementById("medium-button");
+                        const expertButton = document.getElementById("expert-button");
+        
+                        easyButton.addEventListener("click", function() {
+                            localStorage.setItem("level", "easy");
                             console.log(localStorage.getItem("level"));
-                    });
-                    console.log(localStorage.getItem("level"));
-    
-    
-                </script>
-            </div >
+                        });
+        
+                        mediumButton.addEventListener("click", function() {
+                            localStorage.setItem("level", "medium");
+                            console.log(localStorage.getItem("level"));
+                        });
+        
+                        expertButton.addEventListener("click", function() {
+                                localStorage.setItem("level", "expert");
+                                console.log(localStorage.getItem("level"));
+                        });
+                        console.log(localStorage.getItem("level"));
+                    </script>
+                </div >
+            </div>
         </div>
-    </div>
+    </main>
+    <footer>
+        <h2 align="center" class="h2footer">Contributeurs</h2>
+    </footer>
 </body>
 </html>

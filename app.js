@@ -4,6 +4,7 @@ var gridTop = grid.getBoundingClientRect().top;
 var gridBottom = grid.getBoundingClientRect().bottom;
 var gridLeft = grid.getBoundingClientRect().left;
 var gridRight = grid.getBoundingClientRect().right;
+var count_score=0;
 console.log(gridBottom)
 
 //import { Entity } from "./entity.js"
@@ -81,12 +82,13 @@ let Entity = class Entity {
   checkCollision(elm2) {
     var elm1Rect = this.elt.getBoundingClientRect();
     var elm2Rect = elm2.elt.getBoundingClientRect();
+    
   
     const collision = (elm1Rect.right >= elm2Rect.left &&
         elm1Rect.left <= elm2Rect.right) &&
       (elm1Rect.bottom >= elm2Rect.top &&
         elm1Rect.top <= elm2Rect.bottom);
-
+        
     if (this.type === "ennemy" && elm2.type === "player" && collision && playing) {
       playing = false
       handleModal("open", "Vous avez perdu contre les ennemis...")
@@ -114,6 +116,7 @@ var span = document.getElementsByClassName("close")[0];
 function restartGame() {
   ennemies.forEach((ennemy) => {
     grid.removeChild(ennemy.elt)
+
   })
   ennemies = []
   ennemiesCreated = false
@@ -123,8 +126,26 @@ function restartGame() {
   generateEnnemies()
   handleModal("close")
 
-  playing = true
+  localStorage.clear("ScorePlayer");
+  localStorage.setItem("ScorePlayer", 0);
+  // Récupérez les données du stockage local
+  var storedValue = localStorage.getItem("ScorePlayer");
+  
+  // Sélectionnez la balise de texte HTML à laquelle vous souhaitez affecter la valeur
+  var textElement = document.getElementById("affichageScore");
+  // Affectez la valeur au contenu de la balise de texte HTML
+  textElement.innerHTML = storedValue;
+
+  
+  playing = true 
 }
+
+  const button = document.getElementById("restart_button");
+  button.addEventListener("click", function() {
+    location.reload();
+  });
+
+
 
 const audio = document.getElementById('music')
 
@@ -248,13 +269,43 @@ setInterval(() => {
         let indexEnnemy = ennemies.indexOf(ennemy)
         ennemies.splice(indexEnnemy, 1)
         grid.removeChild(ennemy.elt)
+
+        count_score++;
+        localStorage.setItem("ScorePlayer", count_score);
+
+        var scorevaleur=localStorage("ScorePlayer");
+        var hscorevaleur=localStorage("hScore");
+        if(scorevaleur>hscorevaleur){
+          localStorage.setItem("hScore", scorevaleur);
+        }
       }
     }))
   }))
 }, 8)
 
+setInterval(function () {
+  // Récupérez les données du stockage local
+  var storedValuehscore = localStorage.getItem("hScore");
 
+  // Sélectionnez la balise de texte HTML à laquelle vous souhaitez affecter la valeur
+  var textElementhscore = document.getElementById("affichageHighScore");
 
+  // Affectez la valeur au contenu de la balise de texte HTML
+  textElementhscore.textContent = storedValuehscore;
+  
+}, 10 );
+
+setInterval(function () {
+  // Récupérez les données du stockage local
+  var storedValue = localStorage.getItem("ScorePlayer");
+
+  // Sélectionnez la balise de texte HTML à laquelle vous souhaitez affecter la valeur
+  var textElement = document.getElementById("affichageScore");
+
+  // Affectez la valeur au contenu de la balise de texte HTML
+  textElement.textContent = storedValue;
+
+}, 10 );
 
 setInterval(() => {
   ennemies.forEach(ennemy => {

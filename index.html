@@ -18,7 +18,7 @@
                 <h2>Fin de partie</h2>
                 <p id="end-message"></p>
                 <div id="modal-button-container">
-                    <p class="modal-button restart" onclick="restartGame()">Recommencer</p>
+                    <p class="modal-button restart"id="restart_button" onclick="restartGame()">Recommencer</p>
                     <p class="modal-button leave">Quitter</p>
                 </div>    
             </div>
@@ -62,7 +62,7 @@
     <script>
         // Récupération de la valeur stockée dans localStorage
         let storedValueScore = localStorage.getItem("ScorePlayer");
-        localStorage.setItem("ScorePlayer", "");
+        //localStorage.setItem("ScorePlayer", "");
 
         // Sélection de la balise HTML à mettre à jour
         let pScore = document.getElementById("affichageScore");
