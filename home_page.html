@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="home_page.css">
+    <link rel="stylesheet" href="menu.scss">
     <title>Home Page space invaders</title>
 </head>
 <body>
@@ -40,7 +41,7 @@
                     <form id="form_user">
                         <div class="user-box">
                             <input type="text" id="playername" name="playername" required><br><br>
-                            <label for="playername">pseudo</label>
+                            <label for="playername">Pseudo</label>
                             <a id="playernamebutton">
                                 <span></span>
                                 <span></span>
@@ -52,6 +53,7 @@
                         
                         
                     </form>
+
                     
                   <script>  
                     const form = document.getElementById("form_user");
@@ -72,32 +74,17 @@
                     });
                   </script>
             </div>
+
+            
+
+            
             <div class="divn8">
                 <h2>Choix Difficulté</h2>
                
-                <a id="easy-button">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    Easy
-                  </a>
-             
-                <a id="medium-button">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    Medium
-                  </a>
-                
-                <a id="expert-button">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    Expert
-                  </a>
+                <button id="easy-button">Easy</button>
+                <button id="medium-button">Medium</button>
+                <button id="expert-button">Expert</button>
+               
                 <script>
               
                     const easyButton = document.getElementById("easy-button");

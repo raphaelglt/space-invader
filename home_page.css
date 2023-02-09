@@ -2,10 +2,12 @@ html {
     height: 100%;
   }
   body {
-    margin:0;
-    padding:0;
-    font-family: sans-serif;
-    background: linear-gradient(#141e30, #243b55);
+    font-family: Verdana, sans-serif;
+    margin: 0;
+    
+    background: url(ressources/giphy\ \(1\).gif);
+    overflow: hidden;
+    background-size: cover;
   }
   
   .login-box {
@@ -66,7 +68,7 @@ html {
     position: relative;
     display: inline-block;
     padding: 10px 20px;
-    color: #03e9f4;
+    color: #e9f7f8;
     font-size: 16px;
     text-decoration: none;
     text-transform: uppercase;
@@ -77,7 +79,7 @@ html {
   }
   
   .login-box a:hover {
-    background: #03e9f4;
+    background: #5a9293;
     color: #fff;
     border-radius: 5px;
     box-shadow: 0 0 5px #03e9f4,
@@ -188,14 +190,14 @@ h1{
 }
 .divn4{
     position: absolute;
-    left: 8%;
-    top:22%;
+    left: 45%;
+    top: 75%;
 }
 .divn5{
     flex: 1;
     position: absolute;
-    left: 25%;
-    top:65%;
+    left: 8%;
+    top:25%;
 }
 .divn6{
     flex: 1;
@@ -209,10 +211,12 @@ h1{
     top:29%;
 }
 .divn8{
-    flex: 1;
+
+  flex: 1;
     position: absolute;
-    left: 62.25%;
-    top: 65%;
+    
+    left: 75%;
+    top: 25%;
 }
 p,h2,h3,label{
     color: white;
@@ -225,7 +229,7 @@ p,h2,h3,label{
   color: #fff;
   border-radius: 5px;
   background: #141e30;
-  box-shadow: 0 0 0 0 rgba(89, 134, 38, 0.7);
+  box-shadow: 0 0 0 0 rgba(199, 202, 195, 0.7);
   animation: battement 2s infinite cubic-bezier(.66, 0, 0, 1);
   text-decoration: none;
 }
@@ -234,6 +238,22 @@ p,h2,h3,label{
   to {
     box-shadow: 0 0 0 30px rgba(255, 71, 84, 0);
   }
+}
+
+.easy{
+  position: absolute;
+  top: 61px;
+}
+
+.medium{
+  position: absolute;
+  top: 80px;
+}
+
+.hard{
+  position: absolute;
+  top: 100px;
+
 }
 
 
