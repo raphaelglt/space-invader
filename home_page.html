@@ -9,16 +9,18 @@
     <title>Home Page space invaders</title>
 </head>
 <body>
+    <div>
+         <h1><img src="ressources/3520018-200.png"> <p class="titre">SPACE INVADERS</p></h1>
     
-        <h1>Page d'accueil space invaders</h1>
-    
+    </div>
+       
     <div class="divn2">
         <div class="divn3">
             <div class="divn4">
                 <a href="index.html" alt="start_button" class="coeur">Lancer le jeu</a>
             </div>
             <div class="divn5">
-                <h2>My Hight score is:</h2>
+                <h2>High score:</h2>
                 <div>
                     <p id="affichageHighScore"></p>
                 </div>
@@ -81,11 +83,15 @@
             <div class="divn8">
                 <h2>Choix Difficulté</h2>
                
-                <button id="easy-button">Easy</button>
-                <button id="medium-button">Medium</button>
-                <button id="expert-button">Expert</button>
+                <button id="easy-button" class="b">Easy</button>
+                <button id="medium-button" class="b">Medium</button>
+                <button id="expert-button" class="b">Expert</button>
                
-                <script>
+                
+            </div >
+
+
+            <script>
               
                     const easyButton = document.getElementById("easy-button");
                     const mediumButton = document.getElementById("medium-button");
@@ -109,7 +115,6 @@
     
     
                 </script>
-            </div >
         </div>
     </div>
 </body>
