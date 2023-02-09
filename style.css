@@ -39,7 +39,7 @@ h3 {
 .alien {
     background: url(ressources/ennemies.png);
     background-position: center;
-    background-size: contain;
+    background-size: cover;
     width: 40px;
     height: 40px;
     position: absolute; 
@@ -47,9 +47,25 @@ h3 {
 .boss {
     background: url(ressources/alien.gif);
     background-position: center;
-    background-size: contain;
+    background-size: cover;
     width: 100px;
     height: 100px;
+    position: absolute; 
+}
+.big-boss {
+    background: url(ressources/big-boss.gif);
+    background-position: center;
+    background-size: cover;
+    width: 200px;
+    height: 200px;
+    position: absolute; 
+}
+.ultimate-boss {
+    background: url(ressources/ultimate-boss.gif);
+    background-position: center;
+    background-size: cover;
+    width: 400px;
+    height: 400px;
     position: absolute; 
 }
 .boom {

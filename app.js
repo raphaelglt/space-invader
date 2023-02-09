@@ -1,20 +1,24 @@
 var playing = true;
 const grid = document.getElementsByClassName('grille')[0]
-var gridTop = grid.getBoundingClientRect().top;
-var gridBottom = grid.getBoundingClientRect().bottom;
-var gridLeft = grid.getBoundingClientRect().left;
-var gridRight = grid.getBoundingClientRect().right;
+const gridTop = grid.getBoundingClientRect().top;
+const gridBottom = grid.getBoundingClientRect().bottom;
+const gridLeft = grid.getBoundingClientRect().left;
+const gridRight = grid.getBoundingClientRect().right;
 //set speed
 const playerSpeed = 30;
 const ennemySpeed = playerSpeed/10
 const missileSpeed = playerSpeed/3
 
+const gamemode = "normal"
+const difficulty = 4
+
 let Entity = class Entity {
-  constructor(pos, elt, type, direction, lifepoints=1) {
+  constructor(pos, elt, type, direction, speed, lifepoints=1) {
     this.elt = elt;
     this.pos = pos;
     this.type = type;
     this.direction = direction
+    this.speed = speed
     this.lifepoints = lifepoints
   }
 
@@ -24,7 +28,7 @@ let Entity = class Entity {
       grid.removeChild(this.elt)
       if (this.direction === "right") {
         if (this.pos.left < gridRight-50) {
-          this.pos.left += ennemySpeed;
+          this.pos.left += this.speed;
           this.elt.style.left = this.pos.left+"px"
         } else {
           this.pos.bottom += 150;
@@ -38,7 +42,7 @@ let Entity = class Entity {
       }
       if (this.direction === "left") {
         if (this.pos.left > gridLeft+5) {
-          this.pos.left -= ennemySpeed;
+          this.pos.left -= this.speed;
           this.elt.style.left = this.pos.left+"px"
         } else {
           this.pos.bottom += 150;
@@ -56,7 +60,7 @@ let Entity = class Entity {
           replace = false
           missiles.shift()
         } else {
-          this.pos.bottom -= missileSpeed;
+          this.pos.bottom -= this.speed;
           this.elt.style.top = this.pos.bottom+"px"
         }
       }
@@ -123,7 +127,7 @@ function generatePlayer() {
   playerImg.style.left = (gridRight/2)+50+"px";
   grid.appendChild(playerImg)
   playerImg.setAttribute('class', 'tireur')
-  return new Entity({bottom: gridBottom-50, left: (gridRight/2)+50}, playerImg, "player", null)
+  return new Entity({bottom: gridBottom-50, left: (gridRight/2)+50}, playerImg, "player", null, null)
 }
 var player = generatePlayer()
 
@@ -132,29 +136,63 @@ function generateEnnemies() {
   var i = 0
   const intervalId = setInterval(() => {
     if (i < ennemiesNumber) {
-      ennemyImg = document.createElement('div')
-      grid.appendChild(ennemyImg)
-      ennemyImg.setAttribute('class', 'alien')
-      ennemies.push(new Entity({bottom: gridTop, left: gridLeft}, ennemyImg, "ennemy", "right"))
+      let className;
+      let lifepoints;
+      switch (difficulty) {
+        case 1:
+          className = "alien"
+          lifepoints = 1
+          break;
+
+        case 2:
+          className = "boss"
+          lifepoints = 2
+          break;
+
+        case 3:
+          className = "big-boss"
+          lifepoints = 20
+          break;
+
+        case 4:
+          className = "ultimate-boss"
+          lifepoints = 100
+          break;
+      
+        default:
+          className = "alien"
+          lifepoints = 1
+          break;
+      }
 
       ennemyImg = document.createElement('div')
       grid.appendChild(ennemyImg)
-      ennemyImg.setAttribute('class', 'alien')
-      ennemyImg.style.top = gridTop+50+"px"
-      ennemies.push(new Entity({bottom: gridTop+50, left: gridLeft}, ennemyImg, "ennemy", "right"))
+      ennemyImg.setAttribute('class', className)
+      ennemies.push(new Entity({bottom: gridTop, left: gridLeft}, ennemyImg, "ennemy", "right", ennemySpeed-(difficulty/2), lifepoints))
 
-      ennemyImg = document.createElement('div')
-      grid.appendChild(ennemyImg)
-      ennemyImg.setAttribute('class', 'alien')
-      ennemyImg.style.top = gridTop+100+"px"
-      ennemies.push(new Entity({bottom: gridTop+100, left: gridLeft}, ennemyImg, "ennemy", "right"))
+      if (difficulty === 4) {
+        clearInterval(intervalId)
+      } 
 
+      if (difficulty <= 2) {
+        ennemyImg = document.createElement('div')
+        grid.appendChild(ennemyImg)
+        ennemyImg.setAttribute('class', className)
+        ennemyImg.style.top = gridTop+50+"px"
+        ennemies.push(new Entity({bottom: gridTop+50, left: gridLeft}, ennemyImg, "ennemy", "right", ennemySpeed-(difficulty/2), lifepoints))
+
+        ennemyImg = document.createElement('div')
+        grid.appendChild(ennemyImg)
+        ennemyImg.setAttribute('class', className)
+        ennemyImg.style.top = gridTop+100+"px"
+        ennemies.push(new Entity({bottom: gridTop+100, left: gridLeft}, ennemyImg, "ennemy", "right", ennemySpeed-(difficulty/2), lifepoints))
+      }
       i++
       ennemiesCreated = true;
     } else {
       clearInterval(intervalId)
     }
-  }, 200);
+  }, 200*difficulty*2);
 }
 generateEnnemies()  
 
@@ -167,8 +205,7 @@ var map = {}; // You could also use an array
 
 //handle player input
 document.addEventListener("keydown", (event) => {
-  
-    onkeydown = onkeyup = function(e){
+  onkeydown = onkeyup = function(e){
     e = e || event; // to deal with IE
     map[e.keyCode] = e.type == 'keydown';
     if (playing) {
@@ -203,13 +240,13 @@ document.addEventListener("keydown", (event) => {
       }
       if (map["32"] === true) {
         const pewSound = new Audio("./ressources/pew.mp3")
-        pewSound.play()
+        //pewSound.play()
         let missileImg = document.createElement('div')
         grid.appendChild(missileImg)
         missileImg.setAttribute('class', 'laser')
         missileImg.style.left = player.pos.left+22.5+"px"
         missileImg.style.top = player.pos.bottom+"px"
-        missiles.push(new Entity({bottom: player.pos.bottom, left: player.pos.left}, missileImg, "missile", "up"))
+        missiles.push(new Entity({bottom: player.pos.bottom, left: player.pos.left}, missileImg, "missile", "up", missileSpeed))
       }
     grid.appendChild(player.elt)
   } 
@@ -233,7 +270,7 @@ setInterval(() => {
     ennemies.forEach((ennemy => {
       if (missile.checkCollision(ennemy)) {
         const explosionSound = new Audio("./ressources/explosion.mp3")
-        explosionSound.play()
+        //explosionSound.play()
 
         let indexMissile = missiles.indexOf(missile)
         missiles.splice(indexMissile, 1)
@@ -242,7 +279,6 @@ setInterval(() => {
         if (ennemy.lifepoints > 1) {
           ennemy.lifepoints--
         } else {
-          console.log('ennemy touch')
           ennemy.elt.setAttribute('class', 'boom')
           let indexEnnemy = ennemies.indexOf(ennemy)
           ennemies.splice(indexEnnemy, 1)
