@@ -5,6 +5,7 @@ const gridBottom = grid.getBoundingClientRect().bottom;
 const gridLeft = grid.getBoundingClientRect().left;
 const gridRight = grid.getBoundingClientRect().right;
 //set speed
+var count_score=0;
 const playerSpeed = 30;
 const ennemySpeed = playerSpeed/10
 const missileSpeed = playerSpeed/3
@@ -91,6 +92,7 @@ let Entity = class Entity {
   checkCollision(elm2) {
     var elm1Rect = this.elt.getBoundingClientRect();
     var elm2Rect = elm2.elt.getBoundingClientRect();
+    
   
     const collision = (elm1Rect.right >= elm2Rect.left &&
         elm1Rect.left <= elm2Rect.right) &&
@@ -127,6 +129,7 @@ var span = document.getElementsByClassName("close")[0];
 function restartGame() {
   ennemies.forEach((ennemy) => {
     grid.removeChild(ennemy.elt)
+
   })
   missilesEnnemy = []
   ennemies = []
@@ -144,9 +147,21 @@ function restartGame() {
   generateEnnemies()
   handleModal("close")
 
+  localStorage.clear("ScorePlayer");
+  // Récupérez les données du stockage local
+  var storedValue = localStorage.getItem("ScorePlayer");
+  
+  // Sélectionnez la balise de texte HTML à laquelle vous souhaitez affecter la valeur
+  var textElement = document.getElementById("affichageScore");
+  // Affectez la valeur au contenu de la balise de texte HTML
+  textElement.innerHTML = storedValue;
+
+  
   intervalManager(true, sendMissileEnnemy, 2000)
-  playing = true
+  playing = true 
 }
+
+
 
 const audio = document.getElementById('music')
 
@@ -345,13 +360,45 @@ setInterval(() => {
             grid.removeChild(ennemy.elt)
           }, 500)
         }
+
+        count_score++;
+        localStorage.setItem("ScorePlayer", count_score);
+
+        var scorevaleur=count_score;
+        var hscorevaleur=localStorage.getItem("hScore");
+        console.log("hs : "+hscorevaleur)
+        console.log('score : '+scorevaleur)
+        if(scorevaleur>hscorevaleur){
+          localStorage.setItem("hScore", scorevaleur);
+        }
       }
     }))
   }))
 }, 8)
 
+setInterval(function () {
+  // Récupérez les données du stockage local
+  var storedValuehscore = localStorage.getItem("hScore");
 
+  // Sélectionnez la balise de texte HTML à laquelle vous souhaitez affecter la valeur
+  var textElementhscore = document.getElementById("affichageHighScore");
 
+  // Affectez la valeur au contenu de la balise de texte HTML
+  textElementhscore.textContent = storedValuehscore;
+  
+}, 10 );
+
+setInterval(function () {
+  // Récupérez les données du stockage local
+  var storedValue = localStorage.getItem("ScorePlayer");
+
+  // Sélectionnez la balise de texte HTML à laquelle vous souhaitez affecter la valeur
+  var textElement = document.getElementById("affichageScore");
+
+  // Affectez la valeur au contenu de la balise de texte HTML
+  textElement.textContent = storedValue;
+
+}, 10 );
 
 setInterval(() => {
   ennemies.forEach(ennemy => {

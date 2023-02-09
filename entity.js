@@ -30,13 +30,7 @@ export let Entity = class Entity {
         this.direction = "right"
       }
     }
-    grid.appendChild(this.elt)
-
-    
-  
-
-
-    
+    grid.appendChild(this.elt)    
   }
   
 }
