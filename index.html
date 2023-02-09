@@ -24,17 +24,18 @@
             </div>
         </div>
         <nav>
-
+            <div>
             <h3>High Score :</h3>
             <p id="affichageHighScore"></p>
-
+            </div>
+            <div>
             <h3>Score :</h3>
             <p id="affichageScore"></p>
             <ul>
                 <li> <a href="home_page.html">Accueil</a> </li>
                 <li>Fin</li>
             </ul>
-
+            </div>
             <h3>Pseudo du Player:</h3>
             <p id="idPlayer"></p>
         </nav>
@@ -49,7 +50,6 @@
     <script>
         // Récupération de la valeur stockée dans localStorage
         let storedValuehighscore = localStorage.getItem("hScore");
-        localStorage.setItem("hScore", "");
 
         // Sélection de la balise HTML à mettre à jour
         let pHscore = document.getElementById("affichageHighScore");

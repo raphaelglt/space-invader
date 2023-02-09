@@ -127,7 +127,6 @@ function restartGame() {
   handleModal("close")
 
   localStorage.clear("ScorePlayer");
-  localStorage.setItem("ScorePlayer", 0);
   // Récupérez les données du stockage local
   var storedValue = localStorage.getItem("ScorePlayer");
   
@@ -139,11 +138,6 @@ function restartGame() {
   
   playing = true 
 }
-
-  const button = document.getElementById("restart_button");
-  button.addEventListener("click", function() {
-    location.reload();
-  });
 
 
 
@@ -273,8 +267,10 @@ setInterval(() => {
         count_score++;
         localStorage.setItem("ScorePlayer", count_score);
 
-        var scorevaleur=localStorage("ScorePlayer");
-        var hscorevaleur=localStorage("hScore");
+        var scorevaleur=count_score;
+        var hscorevaleur=localStorage.getItem("hScore");
+        console.log("hs : "+hscorevaleur)
+        console.log('score : '+scorevaleur)
         if(scorevaleur>hscorevaleur){
           localStorage.setItem("hScore", scorevaleur);
         }
