@@ -14,7 +14,7 @@
     <div class="divn2">
         <div class="divn3">
             <div class="divn4">
-                <a href="index.html"><img src="ressources/start_button2.png" alt="start_button" class="start_button"></a>
+                <a href="index.html" alt="start_button" class="coeur">Lancer le jeu</a>
             </div>
             <div class="divn5">
                 <h2>My Hight score is:</h2>
@@ -35,14 +35,21 @@
             </div>
         </div>
         <div class="divn6">
-            <div class="divn7">
+            <div class=" login-box" class="divn7">
                 <h2>Pseudo du Player:</h2>
                     <form id="form_user">
-                        <div>
+                        <div class="user-box">
+                            <input type="text" id="playername" name="playername" required><br><br>
                             <label for="playername">pseudo</label>
-                            <input type="text" id="playername" name="playername"><br><br>
-                            <button id="playernamebutton">Changer le pseudo du joueur</button>
+                            <a id="playernamebutton">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                Changer le pseudo du joueur
+                            </a>
                         </div>
+                        
                         
                     </form>
                     
@@ -67,9 +74,30 @@
             </div>
             <div class="divn8">
                 <h2>Choix Difficulté</h2>
-                <button id="easy-button">Easy</button>
-                <button id="medium-button">Medium</button>
-                <button id="expert-button">Expert</button>
+               
+                <a id="easy-button">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    Easy
+                  </a>
+             
+                <a id="medium-button">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    Medium
+                  </a>
+                
+                <a id="expert-button">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    Expert
+                  </a>
                 <script>
               
                     const easyButton = document.getElementById("easy-button");
