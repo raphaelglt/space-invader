@@ -223,6 +223,8 @@ function generateEnnemies() {
     }
   }, 200*difficulty*2);
 }
+
+//generation des ennemis, des missiles, de la map,etc...
 generateEnnemies()  
 
 var missilesEnnemy = []
@@ -233,6 +235,7 @@ var ennemies = []
 const ennemiesNumber = 10;
 var map = {}; // You could also use an array
 
+//deplacement du joueur 2 par rapport aux touces presser
 //handle player input
 document.addEventListener("keydown", (event) => {
   onkeydown = onkeyup = function(e){
@@ -268,7 +271,7 @@ document.addEventListener("keydown", (event) => {
           player2.elt.style.top = player2.pos.bottom+"px"
         }  
       }
-      
+      //apparition du missile sur la position du joueur 2 avant d'etre tiré
       if (map["16"] === true) {
         const pewSound = new Audio("./ressources/pew.mp3")
         pewSound.volume = 0.3
@@ -280,6 +283,8 @@ document.addEventListener("keydown", (event) => {
         missileImg.style.top = player2.pos.bottom+"px"
         missiles.push(new Entity({bottom: player2.pos.bottom, left: player2.pos.left}, missileImg, "missile", "up", missileSpeed))
       }
+
+      //changement de position du joueur 1 par rapport a la touche presser
       if (map["37"] === true) {
         //moving left
         if (player.pos.left > gridLeft+5) {
@@ -308,6 +313,7 @@ document.addEventListener("keydown", (event) => {
           player.elt.style.top = player.pos.bottom+"px"     
         }  
       }
+      //apparition du missile sur la position du joueur 1 avant d'etre tiré
       if (map["32"] === true) {
         const pewSound = new Audio("./ressources/pew.mp3")
         pewSound.volume = 0.3
@@ -324,6 +330,7 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
+//fonction des ennemis envoyant des missiles contre le ou les joueurs
 function sendMissileEnnemy() {
   if (ennemies.length > 0) {
     const randomEnnemy = Math.floor(Math.random() * ennemies.length)
@@ -342,6 +349,7 @@ function sendMissileEnnemy() {
 }
 intervalManager(true, sendMissileEnnemy, 1000/difficulty)
 
+//message de victoire quand tout les ennemis sont morts
 //handle ennemies movement
 setInterval(() => {
   if (ennemies.length === 0 && playing && ennemiesCreated) {
@@ -355,6 +363,7 @@ setInterval(() => {
     elt.move(grid)
   }))
 
+  //message de defete quand un missile ennemis vous a tuer 
   missilesEnnemy.forEach((missile) => {
     missile.move(grid)
     if ((missile.checkCollision(player) || missile.checkCollision(player2)) && missile.type === "missile-ennemy") {
@@ -369,6 +378,7 @@ setInterval(() => {
     }
   })
   
+  //gestion des colision entre les missile joueur et les ennemis pour faire disparaitre les vaisseaux ennemis
   missiles.forEach((missile => {
     missile.move(grid)
     ennemies.forEach((ennemy => {
@@ -391,7 +401,7 @@ setInterval(() => {
             grid.removeChild(ennemy.elt)
           }, 500)
         }
-
+        //compteur du score incrementation et enregistrement dans un localstorage
         count_score++;
         sessionStorage.setItem("ScorePlayer", count_score*difficulty*2);
 
@@ -404,6 +414,8 @@ setInterval(() => {
     }))
   }))
 }, 8)
+
+//affichage des scores et des high score
 
 setInterval(function () {
   // Récupérez les données du stockage local
