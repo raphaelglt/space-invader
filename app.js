@@ -1,3 +1,4 @@
+//variable  grille
 var playing = true;
 const grid = document.getElementsByClassName('grille')[0]
 const gridTop = grid.getBoundingClientRect().top;
@@ -10,6 +11,7 @@ const playerSpeed = 30;
 const ennemySpeed = playerSpeed/10
 const missileSpeed = playerSpeed/3
 
+//variable difficultée
 var difficulty = 1
 
 if (sessionStorage.getItem("level")) {
@@ -23,6 +25,7 @@ const mainTheme = new Audio("./ressources/main_theme.mp3")
 mainTheme.volume = 0.1
 mainTheme.play()
 
+
 const ennemyMissileInterval = null
 function intervalManager(flag, animate, time) {
   if(flag)
@@ -31,6 +34,7 @@ function intervalManager(flag, animate, time) {
     clearInterval(intervalID);
 }
 
+//appel la fonction entity
 let Entity = class Entity {
   constructor(pos, elt, type, direction, speed, lifepoints=1) {
     this.elt = elt;
@@ -40,7 +44,8 @@ let Entity = class Entity {
     this.speed = speed
     this.lifepoints = lifepoints
   }
-
+ 
+  // deplacement ennemi
   move(grid) {
     var replace = true;
     if (playing || this.type !== "ennemy") {
@@ -98,18 +103,19 @@ let Entity = class Entity {
     grid.appendChild(this.elt)
   }
 
-
+  //verif des collisions 
   checkCollision(elm2) {
     if (elm2) {
       var elm1Rect = this.elt.getBoundingClientRect();
       var elm2Rect = elm2.elt.getBoundingClientRect();
       
-    
+      //regarde autour de la box des entitées 
       const collision = (elm1Rect.right >= elm2Rect.left &&
           elm1Rect.left <= elm2Rect.right) &&
         (elm1Rect.bottom >= elm2Rect.top &&
           elm1Rect.top <= elm2Rect.bottom);
 
+        //perdu si collision entre ennemi et joueur
       if (this.type === "ennemy" && elm2.type === "player" && collision && playing) {
         intervalManager(false)
         playing = false
@@ -123,6 +129,7 @@ let Entity = class Entity {
   }
 }
 
+//fonction du pop up
 function handleModal(type, msg="") {
   if (type === "close") {
     modal.style.display = "none";
@@ -140,6 +147,7 @@ function handleModal(type, msg="") {
 var modal = document.getElementById("myModal");
 var span = document.getElementsByClassName("close")[0];
 
+//rafraîchir la page jeu
 function restartGame() {
   location.reload()
 }
@@ -148,6 +156,7 @@ function restartGame() {
 
 const audio = document.getElementById('music')
 
+//genere le player
 function generatePlayer() {
   const playerImg = document.createElement('div')
   playerImg.style.top = gridBottom-50+"px";
@@ -157,9 +166,14 @@ function generatePlayer() {
   return new Entity({bottom: gridBottom-50, left: (gridRight/2)+50}, playerImg, "player", null, null)
 }
 var player = generatePlayer()
+//genere un joueur 2 si demandé
 if (sessionStorage.getItem('player_number') === "2") var player2 = generatePlayer()
 
+
+
 var ennemiesCreated = false
+
+//genere les ennemis en fonction de la difficulté choisie
 function generateEnnemies() {
   var i = 0
   const intervalId = setInterval(() => {
@@ -222,6 +236,8 @@ function generateEnnemies() {
     }
   }, 200*difficulty*2);
 }
+
+//generation des ennemis, des missiles, de la map,etc...
 generateEnnemies()  
 
 var missilesEnnemy = []
@@ -232,6 +248,7 @@ var ennemies = []
 const ennemiesNumber = 10;
 var map = {}; // You could also use an array
 
+//deplacement du joueur 2 par rapport aux touces presser
 //handle player input
 document.addEventListener("keydown", (event) => {
   onkeydown = onkeyup = function(e){
@@ -267,8 +284,8 @@ document.addEventListener("keydown", (event) => {
           player2.elt.style.top = player2.pos.bottom+"px"
         }  
       }
-      
-      if (map["16"] === true && player2) {
+      //apparition du missile sur la position du joueur 2 avant d'etre tiré
+      if (map["16"] === true) {
         const pewSound = new Audio("./ressources/pew.mp3")
         pewSound.volume = 0.3
         pewSound.play()
@@ -279,6 +296,8 @@ document.addEventListener("keydown", (event) => {
         missileImg.style.top = player2.pos.bottom+"px"
         missiles.push(new Entity({bottom: player2.pos.bottom, left: player2.pos.left}, missileImg, "missile", "up", missileSpeed))
       }
+
+      //changement de position du joueur 1 par rapport a la touche presser
       if (map["37"] === true) {
         //moving left
         if (player.pos.left > gridLeft+5) {
@@ -307,6 +326,7 @@ document.addEventListener("keydown", (event) => {
           player.elt.style.top = player.pos.bottom+"px"     
         }  
       }
+      //apparition du missile sur la position du joueur 1 avant d'etre tiré
       if (map["32"] === true) {
         const pewSound = new Audio("./ressources/pew.mp3")
         pewSound.volume = 0.3
@@ -323,6 +343,7 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
+//fonction des ennemis envoyant des missiles contre le ou les joueurs
 function sendMissileEnnemy() {
   if (ennemies.length > 0) {
     const randomEnnemy = Math.floor(Math.random() * ennemies.length)
@@ -341,6 +362,7 @@ function sendMissileEnnemy() {
 }
 intervalManager(true, sendMissileEnnemy, 500/difficulty)
 
+//message de victoire quand tout les ennemis sont morts
 //handle ennemies movement
 setInterval(() => {
   if (ennemies.length === 0 && playing && ennemiesCreated) {
@@ -354,6 +376,7 @@ setInterval(() => {
     elt.move(grid)
   }))
 
+  //message de defete quand un missile ennemis vous a tuer 
   missilesEnnemy.forEach((missile) => {
     missile.move(grid)
     if ((missile.checkCollision(player) || missile.checkCollision(player2)) && missile.type === "missile-ennemy") {
@@ -369,6 +392,7 @@ setInterval(() => {
     }
   })
   
+  //gestion des colision entre les missile joueur et les ennemis pour faire disparaitre les vaisseaux ennemis
   missiles.forEach((missile => {
     missile.move(grid)
     ennemies.forEach((ennemy => {
@@ -391,7 +415,7 @@ setInterval(() => {
             grid.removeChild(ennemy.elt)
           }, 500)
         }
-
+        //compteur du score incrementation et enregistrement dans un localstorage
         count_score++;
         sessionStorage.setItem("ScorePlayer", count_score*difficulty*2);
 
@@ -404,6 +428,8 @@ setInterval(() => {
     }))
   }))
 }, 8)
+
+//affichage des scores et des high score
 
 setInterval(function () {
   // Récupérez les données du stockage local
