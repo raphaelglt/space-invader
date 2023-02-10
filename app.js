@@ -184,7 +184,7 @@ function generateEnnemies() {
 
         case 4:
           className = "ultimate-boss"
-          lifepoints = 100
+          lifepoints = 150
           break;
       
         default:
@@ -339,7 +339,7 @@ function sendMissileEnnemy() {
     }
   }  
 }
-intervalManager(true, sendMissileEnnemy, 1000/difficulty)
+intervalManager(true, sendMissileEnnemy, 500/difficulty)
 
 //handle ennemies movement
 setInterval(() => {

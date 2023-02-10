@@ -270,7 +270,8 @@ p,h2,h3,label{
   text-align: center;
   
 }
-
-
-
-
+#difficulty-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
