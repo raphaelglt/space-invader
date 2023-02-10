@@ -40,6 +40,10 @@
         <div class="divn6">
             <div class=" login-box" class="divn7">
                     <form id="form_user">
+                        <label for="1player">Un joueur</label>
+                        <input type="radio" name="player_number" id="1player" value="1" onchange="handleChange(this);" checked/>
+                        <label for="2player">Deux joueurs</label>
+                        <input type="radio" name="player_number" value="2" onchange="handleChange(this);" id="2player" />
                         <div class="user-box">
                             <input type="text" id="playername" name="playername" required>
                             <label for="playername">Pseudo</label>
@@ -57,6 +61,11 @@
 
                     
                   <script>
+                    sessionStorage.setItem('player_number', "1")
+                    function handleChange(e) {
+                        sessionStorage.setItem('player_number', e.value)
+                    }
+
                     const submitButton = document.getElementById("playernamebutton");
                     const pseudoElt = document.getElementById("playername");
 

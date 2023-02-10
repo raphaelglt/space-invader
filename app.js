@@ -101,22 +101,26 @@ let Entity = class Entity {
 
 
   checkCollision(elm2) {
-    var elm1Rect = this.elt.getBoundingClientRect();
-    var elm2Rect = elm2.elt.getBoundingClientRect();
+    if (elm2) {
+      var elm1Rect = this.elt.getBoundingClientRect();
+      var elm2Rect = elm2.elt.getBoundingClientRect();
+      
     
-  
-    const collision = (elm1Rect.right >= elm2Rect.left &&
-        elm1Rect.left <= elm2Rect.right) &&
-      (elm1Rect.bottom >= elm2Rect.top &&
-        elm1Rect.top <= elm2Rect.bottom);
+      const collision = (elm1Rect.right >= elm2Rect.left &&
+          elm1Rect.left <= elm2Rect.right) &&
+        (elm1Rect.bottom >= elm2Rect.top &&
+          elm1Rect.top <= elm2Rect.bottom);
 
-    if (this.type === "ennemy" && elm2.type === "player" && collision && playing) {
-      intervalManager(false)
-      playing = false
-      handleModal("open", "Vous avez perdu contre les ennemis...")
-    }
-    
-    return collision
+      if (this.type === "ennemy" && elm2.type === "player" && collision && playing) {
+        intervalManager(false)
+        playing = false
+        handleModal("open", "Vous avez perdu contre les ennemis...")
+      }
+      
+      return collision
+    } else {
+      return false
+    }  
   }
 }
 
@@ -154,6 +158,7 @@ function generatePlayer() {
   return new Entity({bottom: gridBottom-50, left: (gridRight/2)+50}, playerImg, "player", null, null)
 }
 var player = generatePlayer()
+if (sessionStorage.getItem('player_number') === "2") var player2 = generatePlayer()
 
 var ennemiesCreated = false
 function generateEnnemies() {
@@ -235,6 +240,46 @@ document.addEventListener("keydown", (event) => {
     map[e.keyCode] = e.type == 'keydown';
     if (playing) {
     grid.removeChild(player.elt);
+      if (map["90"] === true && player2) {
+        //moving top
+        if (player2.pos.bottom > 0) {
+          player2.pos.bottom -= playerSpeed;
+          player2.elt.style.top = player2.pos.bottom+"px"     
+        }  
+      }
+      if (map["81"] === true && player2) {
+        //moving left
+        if (player2.pos.left > gridLeft+5) {
+          player2.pos.left -= playerSpeed;
+          player2.elt.style.left = player2.pos.left+"px"
+        }  
+      }
+      if (map["68"] === true && player2) {
+        //moving right
+        if (player2.pos.left < gridRight-50) {
+          player2.pos.left += playerSpeed;
+          player2.elt.style.left = player2.pos.left+"px"
+        }  
+      }
+      if (map["83"] === true && player2) {
+        //moving bottom
+        if (player2.pos.bottom < gridBottom-50) {
+          player2.pos.bottom += playerSpeed;
+          player2.elt.style.top = player2.pos.bottom+"px"
+        }  
+      }
+      
+      if (map["16"] === true) {
+        const pewSound = new Audio("./ressources/pew.mp3")
+        pewSound.volume = 0.3
+        pewSound.play()
+        let missileImg = document.createElement('div')
+        grid.appendChild(missileImg)
+        missileImg.setAttribute('class', 'laser')
+        missileImg.style.left = player2.pos.left+22.5+"px"
+        missileImg.style.top = player2.pos.bottom+"px"
+        missiles.push(new Entity({bottom: player2.pos.bottom, left: player2.pos.left}, missileImg, "missile", "up", missileSpeed))
+      }
       if (map["37"] === true) {
         //moving left
         if (player.pos.left > gridLeft+5) {
@@ -312,13 +357,14 @@ setInterval(() => {
 
   missilesEnnemy.forEach((missile) => {
     missile.move(grid)
-    if (missile.checkCollision(player) && missile.type === "missile-ennemy") {
+    if ((missile.checkCollision(player) || missile.checkCollision(player2)) && missile.type === "missile-ennemy") {
       handleModal('open', "Les ennemis vous ont tués")
       intervalManager(false)
       playing = false
       player.elt.setAttribute('class', 'boom')
       setTimeout(() => {
-        grid.removeChild(player.elt)
+        if (missile.checkCollision(player2)) grid.removeChild(player2.elt)
+        if (missile.checkCollision(player)) grid.removeChild(player.elt)
       }, 500)
     }
   })
