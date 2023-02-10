@@ -1,3 +1,4 @@
+//variable  grille
 var playing = true;
 const grid = document.getElementsByClassName('grille')[0]
 const gridTop = grid.getBoundingClientRect().top;
@@ -10,7 +11,7 @@ const playerSpeed = 30;
 const ennemySpeed = playerSpeed/10
 const missileSpeed = playerSpeed/3
 
-const gamemode = "normal"
+//variable difficultée
 var difficulty = 1
 
 if (sessionStorage.getItem("level")) {
@@ -24,6 +25,7 @@ const mainTheme = new Audio("./ressources/main_theme.mp3")
 mainTheme.volume = 0.1
 mainTheme.play()
 
+
 const ennemyMissileInterval = null
 function intervalManager(flag, animate, time) {
   if(flag)
@@ -32,6 +34,7 @@ function intervalManager(flag, animate, time) {
     clearInterval(intervalID);
 }
 
+//appel la fonction entity
 let Entity = class Entity {
   constructor(pos, elt, type, direction, speed, lifepoints=1) {
     this.elt = elt;
@@ -41,7 +44,8 @@ let Entity = class Entity {
     this.speed = speed
     this.lifepoints = lifepoints
   }
-
+ 
+  // deplacement ennemi
   move(grid) {
     var replace = true;
     if (playing || this.type !== "ennemy") {
@@ -99,18 +103,19 @@ let Entity = class Entity {
     grid.appendChild(this.elt)
   }
 
-
+  //verif des collisions 
   checkCollision(elm2) {
     if (elm2) {
       var elm1Rect = this.elt.getBoundingClientRect();
       var elm2Rect = elm2.elt.getBoundingClientRect();
       
-    
+      //regarde autour de la box des entitées 
       const collision = (elm1Rect.right >= elm2Rect.left &&
           elm1Rect.left <= elm2Rect.right) &&
         (elm1Rect.bottom >= elm2Rect.top &&
           elm1Rect.top <= elm2Rect.bottom);
 
+        //perdu si collision entre ennemi et joueur
       if (this.type === "ennemy" && elm2.type === "player" && collision && playing) {
         intervalManager(false)
         playing = false
@@ -124,6 +129,7 @@ let Entity = class Entity {
   }
 }
 
+//fonction du pop up
 function handleModal(type, msg="") {
   if (type === "close") {
     modal.style.display = "none";
@@ -141,6 +147,7 @@ function handleModal(type, msg="") {
 var modal = document.getElementById("myModal");
 var span = document.getElementsByClassName("close")[0];
 
+//rafraîchir la page jeu
 function restartGame() {
   location.reload()
 }
@@ -149,6 +156,7 @@ function restartGame() {
 
 const audio = document.getElementById('music')
 
+//genere le player
 function generatePlayer() {
   const playerImg = document.createElement('div')
   playerImg.style.top = gridBottom-50+"px";
@@ -158,9 +166,14 @@ function generatePlayer() {
   return new Entity({bottom: gridBottom-50, left: (gridRight/2)+50}, playerImg, "player", null, null)
 }
 var player = generatePlayer()
+//genere un joueur 2 si demandé
 if (sessionStorage.getItem('player_number') === "2") var player2 = generatePlayer()
 
+
+
 var ennemiesCreated = false
+
+//genere les ennemis en fonction de la difficulté choisie
 function generateEnnemies() {
   var i = 0
   const intervalId = setInterval(() => {
