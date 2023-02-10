@@ -10,7 +10,6 @@ const playerSpeed = 30;
 const ennemySpeed = playerSpeed/10
 const missileSpeed = playerSpeed/3
 
-const gamemode = "normal"
 var difficulty = 1
 
 if (sessionStorage.getItem("level")) {
@@ -269,7 +268,7 @@ document.addEventListener("keydown", (event) => {
         }  
       }
       
-      if (map["16"] === true) {
+      if (map["16"] === true && player2) {
         const pewSound = new Audio("./ressources/pew.mp3")
         pewSound.volume = 0.3
         pewSound.play()
@@ -361,10 +360,11 @@ setInterval(() => {
       handleModal('open', "Les ennemis vous ont tués")
       intervalManager(false)
       playing = false
-      player.elt.setAttribute('class', 'boom')
+      if (missile.checkCollision(player)) player.elt.setAttribute('class', 'boom')
+      if (missile.checkCollision(player2)) player2.elt.setAttribute('class', 'boom')  
       setTimeout(() => {
-        if (missile.checkCollision(player2)) grid.removeChild(player2.elt)
-        if (missile.checkCollision(player)) grid.removeChild(player.elt)
+        grid.removeChild(player2.elt)
+        grid.removeChild(player.elt)
       }, 500)
     }
   })
