@@ -26,8 +26,8 @@
                 </div>
                 <script>
                     // Récupération de la valeur stockée dans localStorage
-                    let storedValuehighscore = localStorage.getItem("hScore");
-                    localStorage.setItem("hScore", "testvaleurhighscore");
+                    let storedValuehighscore = sessionStorage.getItem("hScore");
+                    //console.log(storedValuehighscore)
 
                     // Sélection de la balise HTML à mettre à jour
                     let pHscore = document.getElementById("affichageHighScore");
@@ -39,17 +39,16 @@
         </div>
         <div class="divn6">
             <div class=" login-box" class="divn7">
-                <h2>Pseudo du Player:</h2>
                     <form id="form_user">
                         <div class="user-box">
-                            <input type="text" id="playername" name="playername" required><br><br>
+                            <input type="text" id="playername" name="playername" required>
                             <label for="playername">Pseudo</label>
                             <a id="playernamebutton">
                                 <span></span>
                                 <span></span>
                                 <span></span>
                                 <span></span>
-                                Changer le pseudo du joueur
+                                <p>Changer le pseudo du joueur</p>
                             </a>
                         </div>
                         
@@ -57,22 +56,12 @@
                     </form>
 
                     
-                  <script>  
-                    const form = document.getElementById("form_user");
+                  <script>
                     const submitButton = document.getElementById("playernamebutton");
+                    const pseudoElt = document.getElementById("playername");
 
                     submitButton.addEventListener("click", function() {
-                    event.preventDefault();
-                  
-                    const formData = new FormData(form);
-                    const data = {};
-                  
-                    for (const [key, value] of formData.entries()) {
-                        data[key] = value;
-                    }
-                  
-                      localStorage.setItem("formData", JSON.stringify(data));
-                      console.log(localStorage.getItem("formData"));
+                        if (pseudoElt.value) sessionStorage.setItem('pseudo', pseudoElt.value)
                     });
                   </script>
             </div>
@@ -101,22 +90,18 @@
     
                     easyButton.addEventListener("click", () => {
                         sessionStorage.setItem("level", 1);
-                        console.log(sessionStorage.getItem("level"));
                     });
     
                     mediumButton.addEventListener("click", function() {
                         sessionStorage.setItem("level", 2);
-                        console.log(sessionStorage.getItem("level"));
                     });
 
                     hardButton.addEventListener('click', () => {
                         sessionStorage.setItem("level", 3);
-                        console.log(sessionStorage.getItem("level"));
                     })
     
                     expertButton.addEventListener("click", function() {
                         sessionStorage.setItem("level", 4);
-                        console.log(sessionStorage.getItem("level"));
                     });
     
     

@@ -149,6 +149,7 @@ width: 80%;
 .leave {
     background-color: rgb(227, 56, 56);
 }
-
-
-
+#leave {
+    color: white;
+    text-decoration: none;
+}

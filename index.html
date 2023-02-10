@@ -19,7 +19,7 @@
                 <p id="end-message"></p>
                 <div id="modal-button-container">
                     <p class="modal-button restart"id="restart_button" onclick="restartGame()">Recommencer</p>
-                    <p class="modal-button leave">Quitter</p>
+                    <p class="modal-button leave"><a href="home_page.html" id="leave">Quitter</a></p>
                 </div>    
             </div>
         </div>
@@ -31,12 +31,10 @@
             <div>
             <h3>Score :</h3>
             <p id="affichageScore"></p>
-            <ul>
-                <li> <a href="home_page.html">Accueil</a> </li>
-                <li>Fin</li>
-            </ul>
+            <li> <a href="home_page.html">Accueil</a> </li>
             </div>
             <h3>Pseudo du Player:</h3>
+            <p id="pseudo"></p>
             <p id="idPlayer"></p>
         </nav>
         <div class="grille"></div>
@@ -48,7 +46,7 @@
 
     <script>
         // Récupération de la valeur stockée dans localStorage
-        let storedValuehighscore = localStorage.getItem("hScore");
+        let storedValuehighscore = sessionStorage.getItem("hScore");
 
         // Sélection de la balise HTML à mettre à jour
         let pHscore = document.getElementById("affichageHighScore");
@@ -60,7 +58,7 @@
 
     <script>
         // Récupération de la valeur stockée dans localStorage
-        let storedValueScore = localStorage.getItem("ScorePlayer");
+        let storedValueScore = sessionStorage.getItem("ScorePlayer");
         //localStorage.setItem("ScorePlayer", "");
 
         // Sélection de la balise HTML à mettre à jour

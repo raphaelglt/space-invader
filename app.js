@@ -17,6 +17,13 @@ if (sessionStorage.getItem("level")) {
   difficulty = parseInt(sessionStorage.getItem("level"))
 }
 
+const pseudoElt = document.getElementById('pseudo')
+pseudoElt.innerHTML = sessionStorage.getItem('pseudo')
+
+const mainTheme = new Audio("./ressources/main_theme.mp3")
+mainTheme.volume = 0.1
+mainTheme.play()
+
 const ennemyMissileInterval = null
 function intervalManager(flag, animate, time) {
   if(flag)
@@ -131,38 +138,7 @@ var modal = document.getElementById("myModal");
 var span = document.getElementsByClassName("close")[0];
 
 function restartGame() {
-  ennemies.forEach((ennemy) => {
-    grid.removeChild(ennemy.elt)
-
-  })
-  missilesEnnemy = []
-  ennemies = []
-  ennemiesCreated = false
-
-  var missileDiv = grid.getElementsByClassName("laser");
-  while (missileDiv[0]) {
-    grid.removeChild(missileDiv[0]);
-  }
-
-  if (player.elt.getAttribute('class') === "tireur") {
-    grid.removeChild(player.elt)
-  }
-  player = generatePlayer()
-  generateEnnemies()
-  handleModal("close")
-
-  localStorage.clear("ScorePlayer");
-  // Récupérez les données du stockage local
-  var storedValue = localStorage.getItem("ScorePlayer");
-  
-  // Sélectionnez la balise de texte HTML à laquelle vous souhaitez affecter la valeur
-  var textElement = document.getElementById("affichageScore");
-  // Affectez la valeur au contenu de la balise de texte HTML
-  textElement.innerHTML = storedValue;
-
-  
-  intervalManager(true, sendMissileEnnemy, 2000)
-  playing = true 
+  location.reload()
 }
 
 
@@ -289,7 +265,8 @@ document.addEventListener("keydown", (event) => {
       }
       if (map["32"] === true) {
         const pewSound = new Audio("./ressources/pew.mp3")
-        //pewSound.play()
+        pewSound.volume = 0.3
+        pewSound.play()
         let missileImg = document.createElement('div')
         grid.appendChild(missileImg)
         missileImg.setAttribute('class', 'laser')
@@ -303,18 +280,22 @@ document.addEventListener("keydown", (event) => {
 });
 
 function sendMissileEnnemy() {
-  const randomEnnemy = Math.floor(Math.random() * ennemies.length)
-  if (typeof randomEnnemy !== "undefined") {
-    let missileImg = document.createElement('div')
-    grid.appendChild(missileImg)
-    missileImg.setAttribute('class', 'ennemy-laser')
-    missileImg.style.left = ennemies[randomEnnemy].pos.left+22.5+"px"
-    missileImg.style.top = ennemies[randomEnnemy].pos.bottom+"px"
-    missileImg.style.top = 0+"px"
-    missilesEnnemy.push(new Entity({bottom: ennemies[randomEnnemy].pos.bottom, left: ennemies[randomEnnemy].pos.left}, missileImg, "missile-ennemy", "down", missileSpeed/2))
-  }
+  if (ennemies.length > 0) {
+    const randomEnnemy = Math.floor(Math.random() * ennemies.length)
+    if (typeof randomEnnemy !== "undefined") {
+      let missileImg = document.createElement('div')
+      grid.appendChild(missileImg)
+      missileImg.setAttribute('class', 'ennemy-laser')
+      const widthMissile = parseInt(getComputedStyle(ennemies[randomEnnemy].elt).width.slice(0, -2))
+      const randomPlace = Math.floor(Math.random() * widthMissile)
+      missileImg.style.left = ennemies[randomEnnemy].pos.left+randomPlace+"px"
+      missileImg.style.top = ennemies[randomEnnemy].pos.bottom+"px"
+      missileImg.style.top = 0+"px"
+      missilesEnnemy.push(new Entity({bottom: ennemies[randomEnnemy].pos.bottom, left: ennemies[randomEnnemy].pos.left+randomPlace}, missileImg, "missile-ennemy", "down", missileSpeed/2))
+    }
+  }  
 }
-intervalManager(true, sendMissileEnnemy, 2000)
+intervalManager(true, sendMissileEnnemy, 1000/difficulty)
 
 //handle ennemies movement
 setInterval(() => {
@@ -347,7 +328,8 @@ setInterval(() => {
     ennemies.forEach((ennemy => {
       if (missile.checkCollision(ennemy) && missile.type === "missile") {
         const explosionSound = new Audio("./ressources/explosion.mp3")
-        //explosionSound.play()
+        explosionSound.volume = 0.2
+        explosionSound.play()
 
         let indexMissile = missiles.indexOf(missile)
         missiles.splice(indexMissile, 1)
@@ -365,12 +347,12 @@ setInterval(() => {
         }
 
         count_score++;
-        localStorage.setItem("ScorePlayer", count_score);
+        sessionStorage.setItem("ScorePlayer", count_score*difficulty*2);
 
-        var scorevaleur=count_score;
-        var hscorevaleur=localStorage.getItem("hScore");
+        var scorevaleur=count_score*difficulty*2;
+        var hscorevaleur=sessionStorage.getItem("hScore");
         if(scorevaleur>hscorevaleur){
-          localStorage.setItem("hScore", scorevaleur);
+          sessionStorage.setItem("hScore", scorevaleur);
         }
       }
     }))
@@ -379,7 +361,7 @@ setInterval(() => {
 
 setInterval(function () {
   // Récupérez les données du stockage local
-  var storedValuehscore = localStorage.getItem("hScore");
+  var storedValuehscore = sessionStorage.getItem("hScore");
 
   // Sélectionnez la balise de texte HTML à laquelle vous souhaitez affecter la valeur
   var textElementhscore = document.getElementById("affichageHighScore");
@@ -391,7 +373,7 @@ setInterval(function () {
 
 setInterval(function () {
   // Récupérez les données du stockage local
-  var storedValue = localStorage.getItem("ScorePlayer");
+  var storedValue = sessionStorage.getItem("ScorePlayer");
 
   // Sélectionnez la balise de texte HTML à laquelle vous souhaitez affecter la valeur
   var textElement = document.getElementById("affichageScore");
